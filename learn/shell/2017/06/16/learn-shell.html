@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>shell学习笔记-基础知识（一）</title>
+  <meta name="description" content="  | 管道符">
+  <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic|Source+Sans+Pro:400,700,200,300|Josefin+Sans:400,600,700,300' rel='stylesheet' type='text/css'>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/solarized_dark.min.css">
+  <script src="https://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
+  <script src="https://js.sohu.com/library/jquery-1.7.1.min.js"></script>
+  <script >hljs.initHighlightingOnLoad();</script>
+
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="canonical" href="https://yibingyi.github.io/learn/shell/2017/06/16/learn-shell.html">
+  <link rel="alternate" type="application/rss+xml" title="Work Life" href="https://yibingyi.github.io/feed.xml">
+</head>
+
+
+  <body>
+
+    
+<div class="wrapper">
+  <center> <a href="/index.html"><div class="site-title">   Work Life </div></a></center>
+</div>
+<div class="wrapper site-description">
+<center>  学习 分享 坚持 </center>
+</div>
+<div class="wrapper" style="text-align: center;">
+  <div class="trigger site-navigation">
+    <a class="page-link" href="https://yibingyi.github.io">HOME</a>
+
+    
+    
+
+    <span class="exclamationMark">/</span><a class="page-link" href="/about/">About</a>
+    
+    
+    
+    
+    
+    
+    
+
+    <span class="exclamationMark">/</span><a class="page-link" href="/learn/">Learn</a>
+    
+    
+    
+
+    <span class="exclamationMark">/</span><a class="page-link" href="/shell/">Shell</a>
+    
+    
+    
+    
+  </div>
+</div>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline"><a class="post-title-link"  href="/learn/shell/2017/06/16/learn-shell.html">shell学习笔记-基础知识（一）</a></h1>
+  <center>  <p class="post-meta"><time datetime="2017-06-16T19:00:00+08:00" itemprop="datePublished">Jun 16, 2017</time></p>
+    
+     <div class="">
+       <center><p ><strong><span class="authorKeyword">Author</span><span class="small-site-title"> <h2 style="letter-spacing: 3px !important;
+       text-transform: uppercase !important;">yibing</h2></span></strong></p></center>
+
+     </div>
+     
+   </center>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <ol>
+  <li>
+    <p><code class="highlighter-rouge">|</code> 管道符</p>
+
+    <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c">#将前一个命令作为后一个命令的输入</span>
+cat &gt; t
+who | wc -l  <span class="c">#crtl+d</span>
+chmod +x t	
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">#!</code> 指定处理脚本所需的shell，常见shell有bash，还有expect此类不常见的shell</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">printf</code>  输出</p>
+
+    <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="nb">printf</span> <span class="s2">"%s</span><span class="se">\t\n</span><span class="s2">"</span> china
+<span class="c"># 输出 china </span>
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">IO</code>重定向</p>
+  </li>
+</ol>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>   <span class="c"># crtll+D 文件结尾</span>
+   <span class="c"># program &gt; file 可将program的标准输出修改为file</span>
+   tr -d <span class="s1">'\r'</span> &lt; dos-file.txt &gt; UNIX-file.txt <span class="c">#  将dos-file.txt中的回车符删除；并将结果输出的UNIX-file.txt 改变标准输入和输出</span>
+</code></pre>
+</div>
+<div class="highlighter-rouge"><pre class="highlight"><code>&gt; ``&gt;`` 重定向符号 ``&gt;&gt;`` 将标准输出附件到问价结尾之后
+</code></pre>
+</div>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>   <span class="c"># 将所有以dos-file开头的，以.txt结尾的文件中所有的换行符删除并输出到big-UNIX-file.txt</span>
+   <span class="k">for </span>f <span class="k">in </span>dos-file<span class="k">*</span>.txt
+   <span class="k">do 
+   	</span>tr -d <span class="s1">'\r'</span> &lt; <span class="nv">$f</span> &gt;&gt; big-UNIX-file.txt
+   <span class="k">done</span>
+</code></pre>
+</div>
+<div class="highlighter-rouge"><pre class="highlight"><code>``|`` 建立管道 
+&gt; 使用管道比使用临时文件的速度快的多!
+</code></pre>
+</div>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>   p1 | p2 <span class="c"># 将p1的标准输出作为p2的标准输入</span>
+   <span class="c"># 先删除文件中的回车符 然后完成数据的排序 最后输出到文件</span>
+   tr -d <span class="s1">'\r'</span> &lt; dos-file.txt | sort &gt; UNINX-file.txt
+      <span class="sb">```</span>
+    &gt; tr <span class="o">[</span> options <span class="o">]</span> <span class="nb">source</span>-char-list replace-char-list
+    &gt; 转换字符，例如将大写转换为小写，删除字符等
+
+5. <span class="sb">``</span><span class="nv">$PATH</span><span class="sb">``</span> linux 会沿着path去查找命令 
+
+   <span class="sb">```</span>shell
+   <span class="nb">echo </span>PATH
+   <span class="nb">cd</span> ~
+   mkdir bin
+   mv user bin
+   <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$HOME</span>/bin
+   user <span class="c"># 被shell 发现并执行</span>
+   <span class="c">## 期望输出 user的标准输出 </span>
+</code></pre>
+</div>
+
+<ol>
+  <li>
+    <p>shell 参数</p>
+
+    <div class="language-shell highlighter-rouge"><pre class="highlight"><code>cat &gt; finduser <span class="c"># 将命令行的标准输入输出到文件finduser</span>
+<span class="c">#！ /bin/sh</span>
+<span class="c"># finduser 查看第一个参数指定的用户是否登陆</span>
+who | grep <span class="nv">$1</span> <span class="c"># 当参数列表多以9个的时候 需使用{} eg. ${10}</span>
+
+chmod +x finduser <span class="c"># 为finduser添加可执行权限</span>
+
+./finduser yibing
+<span class="c"># 期望输出 yibing 是否登陆  </span>
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>执行跟踪</p>
+    <blockquote>
+      <p>executing tracing 
+作用： 使shell显示每个被执行的命令</p>
+    </blockquote>
+
+    <div class="language-shell highlighter-rouge"><pre class="highlight"><code>cat tracel.sh
+<span class="c">#! /bin/sh</span>
+
+<span class="nb">set</span> -x <span class="c"># 打开跟踪</span>
+<span class="nb">echo </span>1st <span class="nb">echo
+set</span> +x <span class="c"># 关闭跟踪</span>
+<span class="nb">echo </span>2st <span class="nb">echo
+</span>crtl+D
+
+chmod +x tracel.sh
+./tracel.sh 
+
+<span class="c"># 预期输出</span>
++ <span class="nb">echo </span>1st <span class="nb">echo
+</span>1st <span class="nb">echo</span>
++ <span class="nb">set</span> +x
+2nd <span class="nb">echo</span>
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+  </div>
+
+  <footer class="postNavigation">
+  
+    <a class="postPrev" href="/learn/shell/2017/06/16/learn-shell-1.html">
+        &laquo; shell学习笔记-文本操作（二）
+    </a>
+  
+  
+    <a class="postNext" href="/learn/tool/2017/06/16/learn-expect.html">
+        expect shell auto ssh &raquo;
+    </a>
+  
+  </footer>
+
+    <div id="disqus_thread"></div>
+    <script>
+        function loadDisqus () { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://bing-blog.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+            $(".loadDiscusTips").hide();
+        };
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <div class="loadDiscusTips" node-type="is-icp" style=" cursor:pointer;width:100%;text-align:center;font-size:14px;line-height:20px;background:#fdeced;color:#f0979b;font-family:'Microsoft YaHei';margin:10px 0;padding: 10px 8px;">
+        <a style="text-decoration:none"  onclick="loadDisqus()">我有梯子,我有话要说，我要加载disqus评论框</a>
+    </div>
+</article>
+
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading small-site-title">Work Life</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list footer-content">
+          <li>Powered By <a href="http://github.com/hemangsk/Gravity">Gravity</a></li>
+          <li>Made with <i class="fa fa-heart"></i> on <a href="http://jekyllrb.com"><span style="color:black">{ { Jekyll } }</a></span></li>
+
+
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2 footer-content">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/yibingyi"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">yibingyi</span></a>
+
+          </li>
+          
+
+          
+        </ul>
+      </div>
+
+      <!--<div class="footer-col footer-col-3 site-description">-->
+        <!--<p>学习 分享 坚持</p>-->
+      <!--</div>-->
+    </div>
+
+  </div>
+</footer>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e6d28cbde51d1d0c609b6b968b98d0e5";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+  </body>
+
+</html>

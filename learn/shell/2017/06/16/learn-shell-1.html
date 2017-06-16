@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>shell学习笔记-文本操作（二）</title>
+  <meta name="description" content="  初识sed          正则 ^ 匹配紧接的正则表达式，在行或字符串的起始处 $ 匹配前面的正则表达式，在字符串的末尾活着行的结束。      ">
+  <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic|Source+Sans+Pro:400,700,200,300|Josefin+Sans:400,600,700,300' rel='stylesheet' type='text/css'>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/solarized_dark.min.css">
+  <script src="https://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
+  <script src="https://js.sohu.com/library/jquery-1.7.1.min.js"></script>
+  <script >hljs.initHighlightingOnLoad();</script>
+
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="canonical" href="https://yibingyi.github.io/learn/shell/2017/06/16/learn-shell-1.html">
+  <link rel="alternate" type="application/rss+xml" title="Work Life" href="https://yibingyi.github.io/feed.xml">
+</head>
+
+
+  <body>
+
+    
+<div class="wrapper">
+  <center> <a href="/index.html"><div class="site-title">   Work Life </div></a></center>
+</div>
+<div class="wrapper site-description">
+<center>  学习 分享 坚持 </center>
+</div>
+<div class="wrapper" style="text-align: center;">
+  <div class="trigger site-navigation">
+    <a class="page-link" href="https://yibingyi.github.io">HOME</a>
+
+    
+    
+
+    <span class="exclamationMark">/</span><a class="page-link" href="/about/">About</a>
+    
+    
+    
+    
+    
+    
+    
+
+    <span class="exclamationMark">/</span><a class="page-link" href="/learn/">Learn</a>
+    
+    
+    
+
+    <span class="exclamationMark">/</span><a class="page-link" href="/shell/">Shell</a>
+    
+    
+    
+    
+  </div>
+</div>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline"><a class="post-title-link"  href="/learn/shell/2017/06/16/learn-shell-1.html">shell学习笔记-文本操作（二）</a></h1>
+  <center>  <p class="post-meta"><time datetime="2017-06-16T19:00:00+08:00" itemprop="datePublished">Jun 16, 2017</time></p>
+    
+     <div class="">
+       <center><p ><strong><span class="authorKeyword">Author</span><span class="small-site-title"> <h2 style="letter-spacing: 3px !important;
+       text-transform: uppercase !important;">yibing</h2></span></strong></p></center>
+
+     </div>
+     
+   </center>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <ol>
+  <li>初识sed
+    <blockquote>
+      <p>正则 <code class="highlighter-rouge">^</code> 匹配紧接的正则表达式，在行或字符串的起始处 
+<code class="highlighter-rouge">$</code> 匹配前面的正则表达式，在字符串的末尾活着行的结束。</p>
+    </blockquote>
+
+    <div class="language-shell highlighter-rouge"><pre class="highlight"><code>sed <span class="s1">'s/:.*//'</span> /etc/passwd | sort -u 
+<span class="c">#删除第一个冒号之后的所有东西，并排序列表删除重复部分</span>
+
+find /home/tolstoy -type d -print <span class="c"># 打印此目录下的文件列表</span>
+	sed <span class="s1">'s;/home/tolstoy/;/home/lt/;'</span> <span class="c"># 替换文件路径</span>
+		sed <span class="s1">'s/^/mkdir /'</span> <span class="c"># sed添加mkdir</span>
+			sh -x <span class="c"># shell执行</span>
+</code></pre>
+    </div>
+  </li>
+  <li>sed替换细节
+    <blockquote>
+      <p>除了斜杠之外还可以使用其他符号来作为定界符</p>
+    </blockquote>
+
+    <div class="language-shell highlighter-rouge"><pre class="highlight"><code>sed <span class="s1">'s/\/home\/tolstoy\//\/home\/lt\//'</span> <span class="c"># 若只能使用 ‘/’ 作为定界符的时候 会导致命令不易读</span>
+sed <span class="s1">'s;/home/tolstoy/;/home/lt/;'</span> <span class="c"># 替换文件路径 用 ‘;’ 作为定界符 命令变得清晰</span>
+</code></pre>
+    </div>
+    <blockquote>
+      <p>在sed中 <code class="highlighter-rouge">&amp;</code> 用于匹配“从此点开始替代成匹配与整个正则表达式的整个文本</p>
+    </blockquote>
+
+    <div class="language-shell highlighter-rouge"><pre class="highlight"><code>sed <span class="s1">'s/ata/&amp;, the capital of the south/'</span>  myfile.txt
+</code></pre>
+    </div>
+    <blockquote>
+      <p>在sed中， s命令里以<code class="highlighter-rouge">g</code>结尾表示全局替换 不然只会替代匹配到的第一个</p>
+    </blockquote>
+
+    <div class="language-shell highlighter-rouge"><pre class="highlight"><code>sed <span class="s1">'s/toy/weapon/g'</span> myfile.txt <span class="c"># 全局替换</span>
+sed <span class="s1">'s/toy/weapon/'</span>  myfile.txt <span class="c"># 单独替换</span>
+</code></pre>
+    </div>
+    <blockquote>
+      <p>通过管道可以将sed实体串联起来 ，<code class="highlighter-rouge">-e</code> 选项</p>
+    </blockquote>
+
+    <div class="language-shell highlighter-rouge"><pre class="highlight"><code>sed -e <span class="s1">'s/foo/bar/g'</span> -e <span class="s1">'s/chicken/cow/g'</span> myfile.txt <span class="c"># 第一种</span>
+
+cat &gt; fixup.sed
+s/foo/bar/g
+s/chicken/cow/g
+s/china/america/g
+myfile.txt
+crtl+D
+
+sed -f fixup.sed myfile.txt <span class="c"># 第二种</span>
+
+sed -f fixup.sed -e <span class="s1">'s/man/women/g'</span> myfile.txt <span class="c"># 第三种</span>
+</code></pre>
+    </div>
+  </li>
+  <li>匹配特定行
+    <blockquote>
+      <p><code class="highlighter-rouge">,</code> 范围表达式  <code class="highlighter-rouge">!</code> 否定正则表达式</p>
+    </blockquote>
+
+    <div class="language-shell highlighter-rouge"><pre class="highlight"><code>sed -n <span class="s1">'/&lt;HTML&gt;/p'</span> <span class="k">*</span>.html <span class="c"># 打印含有html标签的行</span>
+sed -n <span class="s1">'10,40p'</span> foo.txt <span class="c"># 用‘,’ 表示行范围</span>
+sed <span class="s1">'/foo/,/bar/ s/baz/quux/g'</span> foo.xml <span class="c"># 在已foo开始，bar结束的行中进行替换</span>
+
+sed /used/ !s/new/used/g <span class="c"># 将没有used行中的new替换为used</span>
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+  </div>
+
+  <footer class="postNavigation">
+  
+    <a class="postPrev" href="/learn/tool/2017/06/16/learn-first.html">
+        &laquo; disqus 被墙了
+    </a>
+  
+  
+    <a class="postNext" href="/learn/shell/2017/06/16/learn-shell.html">
+        shell学习笔记-基础知识（一） &raquo;
+    </a>
+  
+  </footer>
+
+    <div id="disqus_thread"></div>
+    <script>
+        function loadDisqus () { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://bing-blog.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+            $(".loadDiscusTips").hide();
+        };
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <div class="loadDiscusTips" node-type="is-icp" style=" cursor:pointer;width:100%;text-align:center;font-size:14px;line-height:20px;background:#fdeced;color:#f0979b;font-family:'Microsoft YaHei';margin:10px 0;padding: 10px 8px;">
+        <a style="text-decoration:none"  onclick="loadDisqus()">我有梯子,我有话要说，我要加载disqus评论框</a>
+    </div>
+</article>
+
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading small-site-title">Work Life</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list footer-content">
+          <li>Powered By <a href="http://github.com/hemangsk/Gravity">Gravity</a></li>
+          <li>Made with <i class="fa fa-heart"></i> on <a href="http://jekyllrb.com"><span style="color:black">{ { Jekyll } }</a></span></li>
+
+
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2 footer-content">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/yibingyi"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">yibingyi</span></a>
+
+          </li>
+          
+
+          
+        </ul>
+      </div>
+
+      <!--<div class="footer-col footer-col-3 site-description">-->
+        <!--<p>学习 分享 坚持</p>-->
+      <!--</div>-->
+    </div>
+
+  </div>
+</footer>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e6d28cbde51d1d0c609b6b968b98d0e5";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+  </body>
+
+</html>
