@@ -12,6 +12,7 @@
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/solarized_dark.min.css">
   <script src="https://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
+  <script src="https://js.sohu.com/library/jquery-1.7.1.min.js"></script>
   <script >hljs.initHighlightingOnLoad();</script>
 
   <link rel="stylesheet" href="/css/style.css">
@@ -143,25 +144,20 @@ china
   
   
   </footer>
-    <div class="loadDiscusTips" node-type="is-icp" style="display:none;width:100%;text-align:center;font-size:14px;line-height:20px;background:#fdeced;color:#f0979b;font-family:'Microsoft YaHei';margin:10px 0;padding: 10px 8px;">
-       <a style="text-decoration:none" href="" onclick="loadDisqus()">我有梯子 我要加载disqus</a>
-    </div>
+
     <div id="disqus_thread"></div>
     <script>
 
         (function () {
-            var success = 0;
             $.ajax({
                 type:"get",
                 url: "https://disqus.com/favicon.ico",
                 timeout : 2000, //超时时间设置，单位毫秒
                 success: function(){
-                    success = 1;
                     loadDisqus();
                 },
                 error: function(){
                     $(".loadDiscusTips").show();
-                    success = 0;
                 }
             });
         })();
@@ -171,10 +167,13 @@ china
             s.src = 'https://bing-blog.disqus.com/embed.js';
             s.setAttribute('data-timestamp', +new Date());
             (d.head || d.body).appendChild(s);
+            $(".loadDiscusTips").hide();
         };
     </script>
     <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-
+    <div class="loadDiscusTips" node-type="is-icp" style=" cursor:pointer;display:none;width:100%;text-align:center;font-size:14px;line-height:20px;background:#fdeced;color:#f0979b;font-family:'Microsoft YaHei';margin:10px 0;padding: 10px 8px;">
+        <a style="text-decoration:none"  onclick="loadDisqus()">我有梯子 我要加载disqus</a>
+    </div>
 </article>
 
       </div>
