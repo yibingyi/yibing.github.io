@@ -5,8 +5,8 @@
     <description>学习 分享 坚持</description>
     <link>https://yibingyi.github.io/</link>
     <atom:link href="https://yibingyi.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 17 Jun 2017 06:41:09 +0800</pubDate>
-    <lastBuildDate>Sat, 17 Jun 2017 06:41:09 +0800</lastBuildDate>
+    <pubDate>Sat, 17 Jun 2017 06:55:47 +0800</pubDate>
+    <lastBuildDate>Sat, 17 Jun 2017 06:55:47 +0800</lastBuildDate>
     <generator>Jekyll v3.4.3</generator>
     
       <item>
@@ -290,7 +290,7 @@ step5: 心好累💔&lt;/p&gt;
       </item>
     
       <item>
-        <title>从爬虫到ELK</title>
+        <title>人见人爱Kibana</title>
         <description>&lt;p&gt;kibanna一个具有炫酷外观的ElasticSearch客户端，图标功能强大，
 内置开发console，便捷管理和分析数据的利器&lt;/p&gt;
 </description>
