@@ -147,21 +147,6 @@ china
 
     <div id="disqus_thread"></div>
     <script>
-
-        (function () {
-            $.ajax({
-                type:"get",
-                url: "https://disqus.com/next/config.js",
-                timeout : 4000, //超时时间设置，单位毫秒
-                success: function(){
-                    loadDisqus();
-                },
-                error: function(){
-                    $(".loadDiscusTips").show();
-                }
-            });
-        })();
-
         function loadDisqus () { // DON'T EDIT BELOW THIS LINE
             var d = document, s = d.createElement('script');
             s.src = 'https://bing-blog.disqus.com/embed.js';
@@ -172,7 +157,7 @@ china
     </script>
     <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     <div class="loadDiscusTips" node-type="is-icp" style=" cursor:pointer;display:none;width:100%;text-align:center;font-size:14px;line-height:20px;background:#fdeced;color:#f0979b;font-family:'Microsoft YaHei';margin:10px 0;padding: 10px 8px;">
-        <a style="text-decoration:none"  onclick="loadDisqus()">我有梯子 我要加载disqus</a>
+        <a style="text-decoration:none"  onclick="loadDisqus()">我有梯子,我有话要说，我要加载disqus评论框</a>
     </div>
 </article>
 
