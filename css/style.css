@@ -225,6 +225,7 @@ pre {
   float: right; }
 
 .postTitle {
+  font-size: 20px;
   font-weight: 400;
   text-align: center;
   text-transform: uppercase;
