@@ -5,8 +5,8 @@
     <description>学习 分享 坚持</description>
     <link>https://yibingyi.github.io/</link>
     <atom:link href="https://yibingyi.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 17 Jun 2017 06:15:03 +0800</pubDate>
-    <lastBuildDate>Sat, 17 Jun 2017 06:15:03 +0800</lastBuildDate>
+    <pubDate>Sat, 17 Jun 2017 06:16:59 +0800</pubDate>
+    <lastBuildDate>Sat, 17 Jun 2017 06:16:59 +0800</lastBuildDate>
     <generator>Jekyll v3.4.3</generator>
     
       <item>
@@ -68,13 +68,13 @@ china
 &lt;/div&gt;
 </description>
         <pubDate>Fri, 16 Jun 2017 23:00:00 +0800</pubDate>
-        <link>https://yibingyi.github.io/learn/tool/2017/06/16/learn-expect.html</link>
-        <guid isPermaLink="true">https://yibingyi.github.io/learn/tool/2017/06/16/learn-expect.html</guid>
+        <link>https://yibingyi.github.io/learn/shell/2017/06/16/learn-expect.html</link>
+        <guid isPermaLink="true">https://yibingyi.github.io/learn/shell/2017/06/16/learn-expect.html</guid>
         
         
         <category>learn</category>
         
-        <category>tool</category>
+        <category>shell</category>
         
       </item>
     
