@@ -5,8 +5,8 @@
     <description>学习 分享 坚持</description>
     <link>https://yibingyi.github.io/</link>
     <atom:link href="https://yibingyi.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 17 Jun 2017 05:40:09 +0800</pubDate>
-    <lastBuildDate>Sat, 17 Jun 2017 05:40:09 +0800</lastBuildDate>
+    <pubDate>Sat, 17 Jun 2017 05:50:34 +0800</pubDate>
+    <lastBuildDate>Sat, 17 Jun 2017 05:50:34 +0800</lastBuildDate>
     <generator>Jekyll v3.4.3</generator>
     
       <item>
@@ -75,6 +75,220 @@ china
         <category>learn</category>
         
         <category>tool</category>
+        
+      </item>
+    
+      <item>
+        <title>shell学习笔记（一）</title>
+        <description>&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;|&lt;/code&gt; 管道符&lt;/p&gt;
+
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#将前一个命令作为后一个命令的输入&lt;/span&gt;
+cat &amp;gt; t
+who | wc -l  &lt;span class=&quot;c&quot;&gt;#crtl+d&lt;/span&gt;
+chmod +x t	
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;#!&lt;/code&gt; 指定处理脚本所需的shell，常见shell有bash，还有expect此类不常见的shell&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;printf&lt;/code&gt;  输出&lt;/p&gt;
+
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;printf&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;%s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\t\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; china
+&lt;span class=&quot;c&quot;&gt;# 输出 china &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;IO&lt;/code&gt;重定向&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;   &lt;span class=&quot;c&quot;&gt;# crtll+D 文件结尾&lt;/span&gt;
+   &lt;span class=&quot;c&quot;&gt;# program &amp;gt; file 可将program的标准输出修改为file&lt;/span&gt;
+   tr -d &lt;span class=&quot;s1&quot;&gt;'\r'&lt;/span&gt; &amp;lt; dos-file.txt &amp;gt; UNIX-file.txt &lt;span class=&quot;c&quot;&gt;#  将dos-file.txt中的回车符删除；并将结果输出的UNIX-file.txt 改变标准输入和输出&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; ``&amp;gt;`` 重定向符号 ``&amp;gt;&amp;gt;`` 将标准输出附件到问价结尾之后
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;   &lt;span class=&quot;c&quot;&gt;# 将所有以dos-file开头的，以.txt结尾的文件中所有的换行符删除并输出到big-UNIX-file.txt&lt;/span&gt;
+   &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;f &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;dos-file&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.txt
+   &lt;span class=&quot;k&quot;&gt;do 
+   	&lt;/span&gt;tr -d &lt;span class=&quot;s1&quot;&gt;'\r'&lt;/span&gt; &amp;lt; &lt;span class=&quot;nv&quot;&gt;$f&lt;/span&gt; &amp;gt;&amp;gt; big-UNIX-file.txt
+   &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;``|`` 建立管道 
+&amp;gt; 使用管道比使用临时文件的速度快的多!
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;   p1 | p2 &lt;span class=&quot;c&quot;&gt;# 将p1的标准输出作为p2的标准输入&lt;/span&gt;
+   &lt;span class=&quot;c&quot;&gt;# 先删除文件中的回车符 然后完成数据的排序 最后输出到文件&lt;/span&gt;
+   tr -d &lt;span class=&quot;s1&quot;&gt;'\r'&lt;/span&gt; &amp;lt; dos-file.txt | sort &amp;gt; UNINX-file.txt
+      &lt;span class=&quot;sb&quot;&gt;```&lt;/span&gt;
+    &amp;gt; tr &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; options &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt;-char-list replace-char-list
+    &amp;gt; 转换字符，例如将大写转换为小写，删除字符等
+
+5. &lt;span class=&quot;sb&quot;&gt;``&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;``&lt;/span&gt; linux 会沿着path去查找命令 
+
+   &lt;span class=&quot;sb&quot;&gt;```&lt;/span&gt;shell
+   &lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;PATH
+   &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~
+   mkdir bin
+   mv user bin
+   &lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;:&lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/bin
+   user &lt;span class=&quot;c&quot;&gt;# 被shell 发现并执行&lt;/span&gt;
+   &lt;span class=&quot;c&quot;&gt;## 期望输出 user的标准输出 &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;shell 参数&lt;/p&gt;
+
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cat &amp;gt; finduser &lt;span class=&quot;c&quot;&gt;# 将命令行的标准输入输出到文件finduser&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#！ /bin/sh&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# finduser 查看第一个参数指定的用户是否登陆&lt;/span&gt;
+who | grep &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# 当参数列表多以9个的时候 需使用{} eg. ${10}&lt;/span&gt;
+
+chmod +x finduser &lt;span class=&quot;c&quot;&gt;# 为finduser添加可执行权限&lt;/span&gt;
+
+./finduser yibing
+&lt;span class=&quot;c&quot;&gt;# 期望输出 yibing 是否登陆  &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;执行跟踪&lt;/p&gt;
+    &lt;blockquote&gt;
+      &lt;p&gt;executing tracing 
+作用： 使shell显示每个被执行的命令&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;cat tracel.sh
+&lt;span class=&quot;c&quot;&gt;#! /bin/sh&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; -x &lt;span class=&quot;c&quot;&gt;# 打开跟踪&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;1st &lt;span class=&quot;nb&quot;&gt;echo
+set&lt;/span&gt; +x &lt;span class=&quot;c&quot;&gt;# 关闭跟踪&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;2st &lt;span class=&quot;nb&quot;&gt;echo
+&lt;/span&gt;crtl+D
+
+chmod +x tracel.sh
+./tracel.sh 
+
+&lt;span class=&quot;c&quot;&gt;# 预期输出&lt;/span&gt;
++ &lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;1st &lt;span class=&quot;nb&quot;&gt;echo
+&lt;/span&gt;1st &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt;
++ &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; +x
+2nd &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Fri, 16 Jun 2017 19:00:00 +0800</pubDate>
+        <link>https://yibingyi.github.io/learn/shell/2017/06/16/learn-shell.html</link>
+        <guid isPermaLink="true">https://yibingyi.github.io/learn/shell/2017/06/16/learn-shell.html</guid>
+        
+        
+        <category>learn</category>
+        
+        <category>shell</category>
+        
+      </item>
+    
+      <item>
+        <title>shell学习笔记-文本操作（二）</title>
+        <description>&lt;ol&gt;
+  &lt;li&gt;初识sed
+    &lt;blockquote&gt;
+      &lt;p&gt;正则 &lt;code class=&quot;highlighter-rouge&quot;&gt;^&lt;/code&gt; 匹配紧接的正则表达式，在行或字符串的起始处 
+&lt;code class=&quot;highlighter-rouge&quot;&gt;$&lt;/code&gt; 匹配前面的正则表达式，在字符串的末尾活着行的结束。&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sed &lt;span class=&quot;s1&quot;&gt;'s/:.*//'&lt;/span&gt; /etc/passwd | sort -u 
+&lt;span class=&quot;c&quot;&gt;#删除第一个冒号之后的所有东西，并排序列表删除重复部分&lt;/span&gt;
+
+find /home/tolstoy -type d -print &lt;span class=&quot;c&quot;&gt;# 打印此目录下的文件列表&lt;/span&gt;
+	sed &lt;span class=&quot;s1&quot;&gt;'s;/home/tolstoy/;/home/lt/;'&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# 替换文件路径&lt;/span&gt;
+		sed &lt;span class=&quot;s1&quot;&gt;'s/^/mkdir /'&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# sed添加mkdir&lt;/span&gt;
+			sh -x &lt;span class=&quot;c&quot;&gt;# shell执行&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;sed替换细节
+    &lt;blockquote&gt;
+      &lt;p&gt;除了斜杠之外还可以使用其他符号来作为定界符&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sed &lt;span class=&quot;s1&quot;&gt;'s/\/home\/tolstoy\//\/home\/lt\//'&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# 若只能使用 ‘/’ 作为定界符的时候 会导致命令不易读&lt;/span&gt;
+sed &lt;span class=&quot;s1&quot;&gt;'s;/home/tolstoy/;/home/lt/;'&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# 替换文件路径 用 ‘;’ 作为定界符 命令变得清晰&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+    &lt;blockquote&gt;
+      &lt;p&gt;在sed中 &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;amp;&lt;/code&gt; 用于匹配“从此点开始替代成匹配与整个正则表达式的整个文本&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sed &lt;span class=&quot;s1&quot;&gt;'s/ata/&amp;amp;, the capital of the south/'&lt;/span&gt;  myfile.txt
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+    &lt;blockquote&gt;
+      &lt;p&gt;在sed中， s命令里以&lt;code class=&quot;highlighter-rouge&quot;&gt;g&lt;/code&gt;结尾表示全局替换 不然只会替代匹配到的第一个&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sed &lt;span class=&quot;s1&quot;&gt;'s/toy/weapon/g'&lt;/span&gt; myfile.txt &lt;span class=&quot;c&quot;&gt;# 全局替换&lt;/span&gt;
+sed &lt;span class=&quot;s1&quot;&gt;'s/toy/weapon/'&lt;/span&gt;  myfile.txt &lt;span class=&quot;c&quot;&gt;# 单独替换&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+    &lt;blockquote&gt;
+      &lt;p&gt;通过管道可以将sed实体串联起来 ，&lt;code class=&quot;highlighter-rouge&quot;&gt;-e&lt;/code&gt; 选项&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sed -e &lt;span class=&quot;s1&quot;&gt;'s/foo/bar/g'&lt;/span&gt; -e &lt;span class=&quot;s1&quot;&gt;'s/chicken/cow/g'&lt;/span&gt; myfile.txt &lt;span class=&quot;c&quot;&gt;# 第一种&lt;/span&gt;
+
+cat &amp;gt; fixup.sed
+s/foo/bar/g
+s/chicken/cow/g
+s/china/america/g
+myfile.txt
+crtl+D
+
+sed -f fixup.sed myfile.txt &lt;span class=&quot;c&quot;&gt;# 第二种&lt;/span&gt;
+
+sed -f fixup.sed -e &lt;span class=&quot;s1&quot;&gt;'s/man/women/g'&lt;/span&gt; myfile.txt &lt;span class=&quot;c&quot;&gt;# 第三种&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;匹配特定行
+    &lt;blockquote&gt;
+      &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;,&lt;/code&gt; 范围表达式  &lt;code class=&quot;highlighter-rouge&quot;&gt;!&lt;/code&gt; 否定正则表达式&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sed -n &lt;span class=&quot;s1&quot;&gt;'/&amp;lt;HTML&amp;gt;/p'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.html &lt;span class=&quot;c&quot;&gt;# 打印含有html标签的行&lt;/span&gt;
+sed -n &lt;span class=&quot;s1&quot;&gt;'10,40p'&lt;/span&gt; foo.txt &lt;span class=&quot;c&quot;&gt;# 用‘,’ 表示行范围&lt;/span&gt;
+sed &lt;span class=&quot;s1&quot;&gt;'/foo/,/bar/ s/baz/quux/g'&lt;/span&gt; foo.xml &lt;span class=&quot;c&quot;&gt;# 在已foo开始，bar结束的行中进行替换&lt;/span&gt;
+
+sed /used/ !s/new/used/g &lt;span class=&quot;c&quot;&gt;# 将没有used行中的new替换为used&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Fri, 16 Jun 2017 19:00:00 +0800</pubDate>
+        <link>https://yibingyi.github.io/learn/shell/2017/06/16/learn-shell-1.html</link>
+        <guid isPermaLink="true">https://yibingyi.github.io/learn/shell/2017/06/16/learn-shell-1.html</guid>
+        
+        
+        <category>learn</category>
+        
+        <category>shell</category>
         
       </item>
     
