@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>shell学习笔记-文本操作（二）</title>
-  <meta name="description" content="  初识sed          正则 ^ 匹配紧接的正则表达式，在行或字符串的起始处 $ 匹配前面的正则表达式，在字符串的末尾活着行的结束。      ">
+  <meta name="description" content="初识sed">
   <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic|Source+Sans+Pro:400,700,200,300|Josefin+Sans:400,600,700,300' rel='stylesheet' type='text/css'>
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/solarized_dark.min.css">
@@ -78,52 +78,48 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <ol>
-  <li>初识sed
-    <blockquote>
-      <p>正则 <code class="highlighter-rouge">^</code> 匹配紧接的正则表达式，在行或字符串的起始处 
-<code class="highlighter-rouge">$</code> 匹配前面的正则表达式，在字符串的末尾活着行的结束。</p>
-    </blockquote>
+    <p><strong>初识sed</strong></p>
 
-    <div class="language-shell highlighter-rouge"><pre class="highlight"><code>sed <span class="s1">'s/:.*//'</span> /etc/passwd | sort -u 
+<p>正则 <code class="highlighter-rouge">^</code> 匹配紧接的正则表达式，在行或字符串的起始处 
+<code class="highlighter-rouge">$</code> 匹配前面的正则表达式，在字符串的末尾活着行的结束</p>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>sed <span class="s1">'s/:.*//'</span> /etc/passwd | sort -u 
 <span class="c">#删除第一个冒号之后的所有东西，并排序列表删除重复部分</span>
-
-find /home/tolstoy -type d -print <span class="c"># 打印此目录下的文件列表</span>
-	sed <span class="s1">'s;/home/tolstoy/;/home/lt/;'</span> <span class="c"># 替换文件路径</span>
-		sed <span class="s1">'s/^/mkdir /'</span> <span class="c"># sed添加mkdir</span>
-			sh -x <span class="c"># shell执行</span>
+<span class="c"># 打印此目录下的文件列表</span>
+find /home/tolstoy -type d -print 
+ <span class="c"># 替换文件路径</span>
+sed <span class="s1">'s;/home/tolstoy/;/home/lt/;'</span>
+    <span class="c"># sed添加mkdir</span>
+    sed <span class="s1">'s/^/mkdir /'</span> 
+        <span class="c"># shell执行</span>
+        sh -x 
 </code></pre>
-    </div>
-  </li>
-  <li>sed替换细节
-    <blockquote>
-      <p>除了斜杠之外还可以使用其他符号来作为定界符</p>
-    </blockquote>
+</div>
 
-    <div class="language-shell highlighter-rouge"><pre class="highlight"><code>sed <span class="s1">'s/\/home\/tolstoy\//\/home\/lt\//'</span> <span class="c"># 若只能使用 ‘/’ 作为定界符的时候 会导致命令不易读</span>
-sed <span class="s1">'s;/home/tolstoy/;/home/lt/;'</span> <span class="c"># 替换文件路径 用 ‘;’ 作为定界符 命令变得清晰</span>
+<p><strong>sed替换细节</strong></p>
+
+<p>除了斜杠之外还可以使用其他符号来作为定界符</p>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 若只能使用 ‘/’ 作为定界符的时候 会导致命令不易读</span>
+sed <span class="s1">'s/\/home\/tolstoy\//\/home\/lt\//'</span> 
+<span class="c"># 替换文件路径 用 ‘;’ 作为定界符 命令变得清晰</span>
+sed <span class="s1">'s;/home/tolstoy/;/home/lt/;'</span> 
 </code></pre>
-    </div>
-    <blockquote>
-      <p>在sed中 <code class="highlighter-rouge">&amp;</code> 用于匹配“从此点开始替代成匹配与整个正则表达式的整个文本</p>
-    </blockquote>
+</div>
+<p>在sed中 <code class="highlighter-rouge">&amp;</code> 用于匹配“从此点开始替代成匹配与整个正则表达式的整个文本</p>
 
-    <div class="language-shell highlighter-rouge"><pre class="highlight"><code>sed <span class="s1">'s/ata/&amp;, the capital of the south/'</span>  myfile.txt
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>sed <span class="s1">'s/ata/&amp;, the capital of the south/'</span>  myfile.txt
 </code></pre>
-    </div>
-    <blockquote>
-      <p>在sed中， s命令里以<code class="highlighter-rouge">g</code>结尾表示全局替换 不然只会替代匹配到的第一个</p>
-    </blockquote>
+</div>
+<p>在sed中， s命令里以<code class="highlighter-rouge">g</code>结尾表示全局替换 不然只会替代匹配到的第一个</p>
 
-    <div class="language-shell highlighter-rouge"><pre class="highlight"><code>sed <span class="s1">'s/toy/weapon/g'</span> myfile.txt <span class="c"># 全局替换</span>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>sed <span class="s1">'s/toy/weapon/g'</span> myfile.txt <span class="c"># 全局替换</span>
 sed <span class="s1">'s/toy/weapon/'</span>  myfile.txt <span class="c"># 单独替换</span>
 </code></pre>
-    </div>
-    <blockquote>
-      <p>通过管道可以将sed实体串联起来 ，<code class="highlighter-rouge">-e</code> 选项</p>
-    </blockquote>
+</div>
+<p>通过管道可以将sed实体串联起来 ，<code class="highlighter-rouge">-e</code> 选项</p>
 
-    <div class="language-shell highlighter-rouge"><pre class="highlight"><code>sed -e <span class="s1">'s/foo/bar/g'</span> -e <span class="s1">'s/chicken/cow/g'</span> myfile.txt <span class="c"># 第一种</span>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>sed -e <span class="s1">'s/foo/bar/g'</span> -e <span class="s1">'s/chicken/cow/g'</span> myfile.txt <span class="c"># 第一种</span>
 
 cat &gt; fixup.sed
 s/foo/bar/g
@@ -136,22 +132,22 @@ sed -f fixup.sed myfile.txt <span class="c"># 第二种</span>
 
 sed -f fixup.sed -e <span class="s1">'s/man/women/g'</span> myfile.txt <span class="c"># 第三种</span>
 </code></pre>
-    </div>
-  </li>
-  <li>匹配特定行
-    <blockquote>
-      <p><code class="highlighter-rouge">,</code> 范围表达式  <code class="highlighter-rouge">!</code> 否定正则表达式</p>
-    </blockquote>
+</div>
 
-    <div class="language-shell highlighter-rouge"><pre class="highlight"><code>sed -n <span class="s1">'/&lt;HTML&gt;/p'</span> <span class="k">*</span>.html <span class="c"># 打印含有html标签的行</span>
-sed -n <span class="s1">'10,40p'</span> foo.txt <span class="c"># 用‘,’ 表示行范围</span>
-sed <span class="s1">'/foo/,/bar/ s/baz/quux/g'</span> foo.xml <span class="c"># 在已foo开始，bar结束的行中进行替换</span>
+<p><strong>匹配特定行</strong></p>
 
-sed /used/ !s/new/used/g <span class="c"># 将没有used行中的new替换为used</span>
+<p><code class="highlighter-rouge">,</code> 范围表达式  <code class="highlighter-rouge">!</code> 否定正则表达式</p>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 打印含有html标签的行</span>
+sed -n <span class="s1">'/&lt;HTML&gt;/p'</span> <span class="k">*</span>.html 
+<span class="c"># 用‘,’ 表示行范围</span>
+sed -n <span class="s1">'10,40p'</span> foo.txt 
+<span class="c"># 在已foo开始，bar结束的行中进行替换</span>
+sed <span class="s1">'/foo/,/bar/ s/baz/quux/g'</span> foo.xml 
+<span class="c"># 将没有used行中的new替换为used</span>
+sed /used/ !s/new/used/g 
 </code></pre>
-    </div>
-  </li>
-</ol>
+</div>
 
   </div>
 
@@ -180,7 +176,7 @@ sed /used/ !s/new/used/g <span class="c"># 将没有used行中的new替换为use
     </script>
     <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     <div class="loadDiscusTips" node-type="is-icp" style=" cursor:pointer;width:100%;text-align:center;font-size:14px;line-height:20px;background:#fdeced;color:#f0979b;font-family:'Microsoft YaHei';margin:10px 0;padding: 10px 8px;">
-        <a style="text-decoration:none"  onclick="loadDisqus()">我有梯子,我有话要说，我要加载disqus评论框</a>
+        <a style="text-decoration:none"  onclick="loadDisqus()">我有梯子,我有话要说,我要加载disqus评论框</a>
     </div>
 </article>
 

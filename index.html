@@ -96,25 +96,26 @@
     <a class='postLink' href="https://yibingyi.github.io/learn/shell/2017/06/16/learn-shell.html">shell学习笔记-基础知识（一）</a>
     </div>
     <div class="postExt">
-   
-  
-    | 管道符
+   **| 管道符 **
 
-    #将前一个命令作为后一个命令的输入
+#将前一个命令作为后一个命令的输入
 cat &gt; t
 who | wc -l  #crtl+d
 chmod +x t	
 
-    
-  
-  
-    #! 指定处理脚本所需的shell，常见shell有bash，还有expect此类不常见的shell
-  
-  
-    printf  输出
 
-    printf "%s\t\n" china
-#...
+
+#! 指定处理脚本所需的shell，常见shell有bash，还有expect此类不常见的shell
+
+printf "%s\t\n" china
+# 输出 china 
+
+
+
+IO重定向
+
+# crtll+D 文件结尾
+# program...
     </div>
   </div>
 
@@ -130,17 +131,17 @@ chmod +x t
     <a class='postLink' href="https://yibingyi.github.io/learn/shell/2017/06/16/learn-shell-1.html">shell学习笔记-文本操作（二）</a>
     </div>
     <div class="postExt">
-   
-  初识sed
-    
-      正则 ^ 匹配紧接的正则表达式，在行或字符串的起始处 
-$ 匹配前面的正则表达式，在字符串的末尾活着行的结束。
-    
+   初识sed
 
-    sed 's/:.*//' /etc/passwd | sort -u 
+正则 ^ 匹配紧接的正则表达式，在行或字符串的起始处 
+$ 匹配前面的正则表达式，在字符串的末尾活着行的结束
+
+sed 's/:.*//' /etc/passwd | sort -u 
 #删除第一个冒号之后的所有东西，并排序列表删除重复部分
-
-find /home/tolstoy -type d -print # 打印此目录下的文件...
+# 打印此目录下的文件列表
+find /home/tolstoy -type d -print 
+ # 替换文件路径
+sed 's;/ho...
     </div>
   </div>
 

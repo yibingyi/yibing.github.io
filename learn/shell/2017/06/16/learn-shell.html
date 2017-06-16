@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>shell学习笔记-基础知识（一）</title>
-  <meta name="description" content="  | 管道符">
+  <meta name="description" content="**| 管道符 **">
   <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic|Source+Sans+Pro:400,700,200,300|Josefin+Sans:400,600,700,300' rel='stylesheet' type='text/css'>
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/solarized_dark.min.css">
@@ -78,98 +78,82 @@
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <ol>
-  <li>
-    <p><code class="highlighter-rouge">|</code> 管道符</p>
+    <p>**<code class="highlighter-rouge">|</code> 管道符 **</p>
 
-    <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c">#将前一个命令作为后一个命令的输入</span>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c">#将前一个命令作为后一个命令的输入</span>
 cat &gt; t
 who | wc -l  <span class="c">#crtl+d</span>
 chmod +x t	
 </code></pre>
-    </div>
-  </li>
-  <li>
-    <p><code class="highlighter-rouge">#!</code> 指定处理脚本所需的shell，常见shell有bash，还有expect此类不常见的shell</p>
-  </li>
-  <li>
-    <p><code class="highlighter-rouge">printf</code>  输出</p>
+</div>
 
-    <div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="nb">printf</span> <span class="s2">"%s</span><span class="se">\t\n</span><span class="s2">"</span> china
+<p><strong><code class="highlighter-rouge">#!</code> 指定处理脚本所需的shell，常见shell有bash，还有expect此类不常见的shell</strong></p>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="nb">printf</span> <span class="s2">"%s</span><span class="se">\t\n</span><span class="s2">"</span> china
 <span class="c"># 输出 china </span>
 </code></pre>
-    </div>
-  </li>
-  <li>
-    <p><code class="highlighter-rouge">IO</code>重定向</p>
-  </li>
-</ol>
-
-<div class="language-shell highlighter-rouge"><pre class="highlight"><code>   <span class="c"># crtll+D 文件结尾</span>
-   <span class="c"># program &gt; file 可将program的标准输出修改为file</span>
-   tr -d <span class="s1">'\r'</span> &lt; dos-file.txt &gt; UNIX-file.txt <span class="c">#  将dos-file.txt中的回车符删除；并将结果输出的UNIX-file.txt 改变标准输入和输出</span>
-</code></pre>
-</div>
-<div class="highlighter-rouge"><pre class="highlight"><code>&gt; ``&gt;`` 重定向符号 ``&gt;&gt;`` 将标准输出附件到问价结尾之后
-</code></pre>
 </div>
 
-<div class="language-shell highlighter-rouge"><pre class="highlight"><code>   <span class="c"># 将所有以dos-file开头的，以.txt结尾的文件中所有的换行符删除并输出到big-UNIX-file.txt</span>
-   <span class="k">for </span>f <span class="k">in </span>dos-file<span class="k">*</span>.txt
-   <span class="k">do 
-   	</span>tr -d <span class="s1">'\r'</span> &lt; <span class="nv">$f</span> &gt;&gt; big-UNIX-file.txt
-   <span class="k">done</span>
+<p><strong><code class="highlighter-rouge">IO</code>重定向</strong></p>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># crtll+D 文件结尾</span>
+<span class="c"># program &gt; file 可将program的标准输出修改为file</span>
+<span class="c">#  将dos-file.txt中的回车符删除；并将结果输出的UNIX-file.txt 改变标准输入和输出</span>
+tr -d <span class="s1">'\r'</span> &lt; dos-file.txt &gt; UNIX-file.txt 
 </code></pre>
 </div>
-<div class="highlighter-rouge"><pre class="highlight"><code>``|`` 建立管道 
-&gt; 使用管道比使用临时文件的速度快的多!
+<p><code class="highlighter-rouge">&gt;</code><code class="highlighter-rouge"> 重定向符号 </code><code class="highlighter-rouge">&gt;&gt;</code>` 将标准输出附件到问价结尾之后</p>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 将所有以dos-file开头的，以.txt结尾的文件中所有的换行符删除并输出到big-UNIX-file.txt</span>
+<span class="k">for </span>f <span class="k">in </span>dos-file<span class="k">*</span>.txt
+<span class="k">do 
+</span>tr -d <span class="s1">'\r'</span> &lt; <span class="nv">$f</span> &gt;&gt; big-UNIX-file.txt
+<span class="k">done</span>
 </code></pre>
 </div>
+<p>| 建立管道  使用管道比使用临时文件的速度快的多!</p>
 
-<div class="language-shell highlighter-rouge"><pre class="highlight"><code>   p1 | p2 <span class="c"># 将p1的标准输出作为p2的标准输入</span>
-   <span class="c"># 先删除文件中的回车符 然后完成数据的排序 最后输出到文件</span>
-   tr -d <span class="s1">'\r'</span> &lt; dos-file.txt | sort &gt; UNINX-file.txt
-      <span class="sb">```</span>
-    &gt; tr <span class="o">[</span> options <span class="o">]</span> <span class="nb">source</span>-char-list replace-char-list
-    &gt; 转换字符，例如将大写转换为小写，删除字符等
-
-5. <span class="sb">``</span><span class="nv">$PATH</span><span class="sb">``</span> linux 会沿着path去查找命令 
-
-   <span class="sb">```</span>shell
-   <span class="nb">echo </span>PATH
-   <span class="nb">cd</span> ~
-   mkdir bin
-   mv user bin
-   <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$HOME</span>/bin
-   user <span class="c"># 被shell 发现并执行</span>
-   <span class="c">## 期望输出 user的标准输出 </span>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 将p1的标准输出作为p2的标准输入</span>
+p1 | p2 
+<span class="c"># 先删除文件中的回车符 然后完成数据的排序 最后输出到文件</span>
+tr -d <span class="s1">'\r'</span> &lt; dos-file.txt | sort &gt; UNINX-file.txt
 </code></pre>
 </div>
 
-<ol>
-  <li>
-    <p>shell 参数</p>
+<p><strong><code class="highlighter-rouge">$PATH</code> linux 会沿着path去查找命令</strong></p>
 
-    <div class="language-shell highlighter-rouge"><pre class="highlight"><code>cat &gt; finduser <span class="c"># 将命令行的标准输入输出到文件finduser</span>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="nb">echo </span>PATH
+<span class="nb">cd</span> ~
+mkdir bin
+mv user bin
+<span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$HOME</span>/bin
+user <span class="c"># 被shell 发现并执行</span>
+<span class="c">## 期望输出 user的标准输出 </span>
+</code></pre>
+</div>
+
+<p><strong>shell 参数</strong></p>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># 将命令行的标准输入输出到文件finduser</span>
+cat &gt; finduser
+
 <span class="c">#！ /bin/sh</span>
 <span class="c"># finduser 查看第一个参数指定的用户是否登陆</span>
-who | grep <span class="nv">$1</span> <span class="c"># 当参数列表多以9个的时候 需使用{} eg. ${10}</span>
+<span class="c"># 当参数列表多以9个的时候 需使用{} eg. ${10}</span>
+who | grep <span class="nv">$1</span> 
 
 chmod +x finduser <span class="c"># 为finduser添加可执行权限</span>
 
 ./finduser yibing
 <span class="c"># 期望输出 yibing 是否登陆  </span>
 </code></pre>
-    </div>
-  </li>
-  <li>
-    <p>执行跟踪</p>
-    <blockquote>
-      <p>executing tracing 
-作用： 使shell显示每个被执行的命令</p>
-    </blockquote>
+</div>
 
-    <div class="language-shell highlighter-rouge"><pre class="highlight"><code>cat tracel.sh
+<p><strong>执行跟踪</strong></p>
+
+<p>executing tracing [使shell显示每个被执行的命令]</p>
+
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>cat tracel.sh
 <span class="c">#! /bin/sh</span>
 
 <span class="nb">set</span> -x <span class="c"># 打开跟踪</span>
@@ -187,9 +171,7 @@ chmod +x tracel.sh
 + <span class="nb">set</span> +x
 2nd <span class="nb">echo</span>
 </code></pre>
-    </div>
-  </li>
-</ol>
+</div>
 
   </div>
 
@@ -218,7 +200,7 @@ chmod +x tracel.sh
     </script>
     <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     <div class="loadDiscusTips" node-type="is-icp" style=" cursor:pointer;width:100%;text-align:center;font-size:14px;line-height:20px;background:#fdeced;color:#f0979b;font-family:'Microsoft YaHei';margin:10px 0;padding: 10px 8px;">
-        <a style="text-decoration:none"  onclick="loadDisqus()">我有梯子,我有话要说，我要加载disqus评论框</a>
+        <a style="text-decoration:none"  onclick="loadDisqus()">我有梯子,我有话要说,我要加载disqus评论框</a>
     </div>
 </article>
 
