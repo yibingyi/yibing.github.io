@@ -101,7 +101,11 @@
                 url: "https://disqus.com/favicon.ico",
                 timeout : 2000, //超时时间设置，单位毫秒
                 success: function(){
-                    loadDisqus();
+                    var d = document, s = d.createElement('script');
+                    s.src = 'https://bing-blog.disqus.com/embed.js';
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                    $(".loadDiscusTips").hide();
                 },
                 error: function(){
                     $(".loadDiscusTips").show();
