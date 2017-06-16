@@ -1,88 +1,182 @@
-If there's any issue you are facing in setting up DevJournal theme, I'm there for you. Just create an issue in this repository (http://github.com/hemangsk/DevJournal), (https://help.github.com/articles/creating-an-issue/) and I'll get back to you asap. :smile: :+1:<br>
+<p align = "center">
+<img src="http://i.imgur.com/JhbQ03z.png"/>
+</p>
 
-![alt-tag](https://farm8.staticflickr.com/7062/26385542743_1c7e6b8d9e_o.png) 
+---
 
-![alt-tag](https://farm8.staticflickr.com/7320/26385629583_eac6861c48_o.png)
+If there's any issue you are facing in setting up this theme I'm there for you. Just create an issue in this repository (<http://github.com/hemangsk/Gravity>), (<https://help.github.com/articles/creating-an-issue/>) and I'll get back to you asap.
 
+![Welcome to Gravity](https://user-images.githubusercontent.com/13018570/27043040-778d80cc-4fb6-11e7-8619-de4be626be67.png)
+<img src="http://i.imgur.com/cPwoX3E.png"/>
+<img src="http://i.imgur.com/3TMoBGj.png"/>
+<img src="http://i.imgur.com/Z6h3uCp.png"/>
+<img src="http://i.imgur.com/bB7IIHr.png"/>
 
-![alt-tag](https://farm8.staticflickr.com/7300/26895705412_d6365b9a14_o.png)
+***
 
+# INSTALLATION
 
+### Dependencies
 
-![alt-tag](https://farm8.staticflickr.com/7370/26956762406_cbfa7a2139_o.png)
+Gravity uses Jekyll and it's built-in SCSS compiler for the associated CSS, so the first thing you'll need is Jekyll itself:
 
-#### To create a new post :sunglasses:
-
-- Create a .markdown file inside _posts folder.
-- Name the file according to the standard jekyll format.
+```bash
+$ gem install jekyll
 ```
-   2016-03-30-i-love-design.markdown
+
+In case you don't have the `bundler` gem installed already, you can install it as follows:
+
+```bash
+$ gem install bundler
 ```
-- Write the Front Matter and content in the file.
-    ```
-          ---
-          layout: post | default | page
-          title:  String Post Title
-          date:   Time Stamp
-          categories: String | Array of Strings Category / Categories 
-          ---
-    ```
-    
-    ```
-        ---
-        layout: post
-        title:  "The One with the Blackout"
-        date:   2016-03-30 19:45:31 +0530
-        categories: ["life", "friends"]
-        ---
-    ```  
 
+For pagination, Gravity uses the [jekyll-paginate](https://jekyllrb.com/docs/pagination/) gem :
 
-![alt-tag](https://farm8.staticflickr.com/7660/26895189602_170af0a783_o.png)
-![alt-tag](https://farm8.staticflickr.com/7594/26385450183_37116c6d32_o.png)
+```bash
+$ gem install jekyll-paginate
+```
 
+***
 
-####Create new pages, such a breeze! :smile:
+# USAGE
+
+Once you have the required gems, you can go ahead and clone the
+[Gravity repository](https://github.com/hemangsk/Gravity) or [download](https://github.com/hemangsk/Gravity/archive/master.zip)
+a zip of the master branch.
+
+Run :
+
+```bash
+$ jekyll serve
+```
+
+Jekyll should now be generating your content!
+
+***
+
+# ADDING POSTS
+
+The theme by default ships with starter posts located in `_posts/`. Delete these posts and add your content to the `_posts`
+folder to see them being served up by Jekyll. [This](https://jekyllrb.com/docs/posts/) would be a good guide to getting started on writing posts using Jekyll. We've added a concise guide below:
+
+- Create a .markdown file inside `_posts` folder.
+- Name the file according to the format YY-MM-DD-[short name for your post].
+- `2016-03-30-i-love-design.markdown`
+- Write the *Front Matter* and content in the file.
+
+### FORMAT
+
+```
+---
+layout: post | default | page
+title: String POST TITLE
+date: Time Stamp
+categories: String | Array of Strings CATEGORY / CATEGORIES
+---
+
+---
+layout: post
+title: "The One with the Blackout"
+date: 2016-03-30 19:45:31 +0530
+categories: ["life", friends]
+---
+```
+
+***
+
+# CREATE PAGES
+
 - Create a .md file in the root directory.
 - Name the file with the desired page link name.
+  `about.md`
+  `design.md`
+- Write the *Front Matter* and content in the file.
+
+### FORMAT
+
 ```
-   about.md
+---
+layout: page
+title: String TITLE OF THE WEBPAGE
+permalink: / String / PERMALINK FOR THE WEBPAGE
+tagline: String OPTIONAL GRAVITY FEATURE : TAGLINE FOR THE PAGE
+---
+
+---
+layout: page
+title: "Science"
+permalink: /science/
+tagline: "Humanity is overrated."
+---
 ```
+
+***
+
+#### Introducing
+
+# ARCHIVE PAGES
+
+#### You can display a list of all the posts corresponding to a particular category on a standalone page using the `ARCHIVE` layout.
+
+- Create a .md file in the root directory.
+- Name the file. Preferred name will be the name of the category.
+    \*`life.md`
+- Write the *Front Matter* and content in the file.
+
+### FORMAT
+
 ```
-   design.md
+---
+layout: archive ARCHIVE PAGE LAYOUT
+title: String TITLE OF THE WEBPAGE
+permalink: / String / PERMALINK FOR THE WEBPAGE
+tagline: String TAGLINE FOR THE PAGE
+category: String NAME OF THE CATEGORY OF WHICH THE PAGE WILL SHOW POSTS
+---
+
+---
+layout: archive
+title: "Design"
+permalink: "Design"
+tagline: "It's all about perception"
+category: "design"
+---
 ```
-- Write the Front Matter and content in the file.
+
+#### DIRECTORY STRUCTURE
+
 ```
-          ---
-          layout: page
-          title: String Title of the webpage
-          permalink: / String / Permalink for the webpage
-          tagline: String Optional DevJournal Feature : Tagline for the page
-          ---
-```      
+├── css                                         # => Output of the combined SASS files
+│   └── style.scss
+├── _includes                                   # => Contains partials that can be used with your layouts
+│   ├── footer.html
+│   ├── header.html
+│   ├── head.html
+│   ├── icon-github.html
+│   ├── icon-github.svg
+│   ├── icon-twitter.html
+│   └── icon-twitter.svg
+├── _layouts                                    # => Layout related HTML files
+│   ├── archive.html
+│   ├── default.html
+│   ├── page.html
+│   └── post.html
+├── _posts                                      # => posts, dynamic content. Follow the format: YEAR-MONTH-DAY-title.MARKUP
+│   ├── 2016-03-30-design-stories.markdown
+│   ├── 2016-03-30-science0.markdown
+│   ├── 2016-03-30-science.markdown
+│   └── 2016-03-30-welcome-to-jekyll.markdown
+└── _sass                                       # => SASS partials for styling
+|   ├── _base.scss
+|   ├── _layout.scss
+|   └── _syntax-highlighting.scss
+├── about.md
+├── _config.yml                                 # => Configuration options or flags for your site go here
+├── design.md
+├── download.md
+├── feed.xml
+├── index.html
+├── LICENSE.txt                                 # => Licensing information
+├── README.md
+└── science.md
 ```
-        ---
-        layout: page
-        title:  "Science"
-        permalink:   /science/
-        tagline : "Humanity is overrated."
-        ---
-```      
-
-![alt-tag](https://farm8.staticflickr.com/7124/26895188812_65218d8652_o.png)
-
-
-That's all folks.
-
->Super Flexible, Minimal, Text Based jekyll theme for the kickass geek :sunglasses:
-
-####It'd be really cool if you,<br>
-1.  Create some new feature and would like to integrate in DevJournal. Pull requests are most invited.
-2.  Open issues if you find bugs.
-3.  Just so you know, the license type is MIT.
-
-
->Its' all about being community driven.  :bus: :bus: :dash:
-
-Have a great day!  :smile: :smile: :smiley:
-
