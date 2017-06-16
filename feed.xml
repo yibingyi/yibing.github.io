@@ -5,8 +5,8 @@
     <description>学习 分享 坚持</description>
     <link>https://yibingyi.github.io/</link>
     <atom:link href="https://yibingyi.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 17 Jun 2017 06:12:48 +0800</pubDate>
-    <lastBuildDate>Sat, 17 Jun 2017 06:12:48 +0800</lastBuildDate>
+    <pubDate>Sat, 17 Jun 2017 06:15:03 +0800</pubDate>
+    <lastBuildDate>Sat, 17 Jun 2017 06:15:03 +0800</lastBuildDate>
     <generator>Jekyll v3.4.3</generator>
     
       <item>
@@ -80,7 +80,7 @@ china
     
       <item>
         <title>shell学习笔记-基础知识（一）</title>
-        <description>&lt;p&gt;**&lt;code class=&quot;highlighter-rouge&quot;&gt;|&lt;/code&gt; 管道符 **&lt;/p&gt;
+        <description>&lt;p&gt;&lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;|&lt;/code&gt; 管道符&lt;/strong&gt;&lt;/p&gt;
 
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#将前一个命令作为后一个命令的输入&lt;/span&gt;
 cat &amp;gt; t
