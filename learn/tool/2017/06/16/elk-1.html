@@ -267,88 +267,87 @@ crontab做定时任务，每小时抓取一次</p>
 </div>
 <p>logstash的配置文件如下，其实很好理解，logstash就是一个<code class="highlighter-rouge">带过滤功能的管道</code>连接着水源（文件、redis、mysql）
 和水池（elasticserch等）</p>
-<div class="highlighter-rouge"><pre class="highlight"><code> #filename:lagou.conf
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code> <span class="c">#filename:lagou.conf</span>
  
- # 指定输入源是文件 路径为/Users/linus/Document/lagou/lagou.log
- input{
-     file{
-         path =&gt; ["/Users/linus/Document/lagou/lagou.log"]
-     }
- }
+ <span class="c"># 指定输入源是文件 路径为/Users/linus/Document/lagou/lagou.log</span>
+ input<span class="o">{</span>
+     file<span class="o">{</span>
+         path <span class="o">=</span>&gt; <span class="o">[</span><span class="s2">"/Users/linus/Document/lagou/lagou.log"</span><span class="o">]</span>
+     <span class="o">}</span>
+ <span class="o">}</span>
 
- # 水管里面的过滤器
-filter{
-	mutate{
-	    # 将输入的以行为单位的字符串以"||"为界进行切割
-		split=&gt;["message","||"]
-		    # 0 类似数组下标
-			add_field =&gt; {
-				"id" =&gt; "%{[message][0]}"
-			}
-			add_field =&gt; {
-				"position_id" =&gt; "%{[message][1]}"
-			}
+ <span class="c"># 水管里面的过滤器</span>
+filter<span class="o">{</span>
+	mutate<span class="o">{</span>
+	    <span class="c"># 将输入的以行为单位的字符串以"||"为界进行切割</span>
+		<span class="nv">split</span><span class="o">=</span>&gt;[<span class="s2">"message"</span>,<span class="s2">"||"</span><span class="o">]</span>
+		    <span class="c"># 0 类似数组下标</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"id"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][0]}"</span>
+			<span class="o">}</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"position_id"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][1]}"</span>
+			<span class="o">}</span>
 
-			add_field =&gt; {
-				"position" =&gt; "%{[message][2]}"
-			}
-			add_field =&gt; {
-				"position_label" =&gt; "%{[message][3]}"
-			}
-			add_field =&gt; {
-				"salary" =&gt; "%{[message][4]}"
-			}
-			add_field =&gt; {
-				"company" =&gt; "%{[message][5]}"
-			}
-			add_field =&gt; {
-				"company_logo" =&gt; "%{[message][6]}"
-			}
-			add_field =&gt; {
-				"company_stage" =&gt; "%{[message][7]}"
-			}
-			add_field =&gt; {
-				"advantage" =&gt; "%{[message][8]}"
-			}
-			add_field =&gt; {
-				"experience" =&gt; "%{[message][9]}"
-			}
-			add_field =&gt; {
-				"education" =&gt; "%{[message][10]}"
-			}
-			add_field =&gt; {
-				"city" =&gt; "%{[message][11]}"
-			}
-			add_field =&gt; {
-				"industry" =&gt; "%{[message][12]}"
-			}
-             add_field =&gt; {
-                 "company_size" =&gt; "%{[message][13]}"
-             }
-             add_field =&gt; {
-                 "search" =&gt; "%{[message][14]}"
-             }
-             add_field =&gt; {
-                 "create_time" =&gt; "%{[message][15]}"
-             }
-
-			remove_field =&gt; ["message"]
-	}
-    # 对json的处理 输入源是postion_label 然后decode json 并赋值给target所指定字段
-    json {
-        source =&gt; "position_label"
-        target =&gt; "position_label_format"
-    }
-}
-# 输出 
-output{
-    # 输出到elasticsearch 默认运行在9200端口
-	elasticsearch {
-		hosts =&gt; ["127.0.0.1:9200"]
-		    # 索引名称
-            index =&gt; "es_lagou"
-	}
-}
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"position"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][2]}"</span>
+			<span class="o">}</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"position_label"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][3]}"</span>
+			<span class="o">}</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"salary"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][4]}"</span>
+			<span class="o">}</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"company"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][5]}"</span>
+			<span class="o">}</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"company_logo"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][6]}"</span>
+			<span class="o">}</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"company_stage"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][7]}"</span>
+			<span class="o">}</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"advantage"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][8]}"</span>
+			<span class="o">}</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"experience"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][9]}"</span>
+			<span class="o">}</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"education"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][10]}"</span>
+			<span class="o">}</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"city"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][11]}"</span>
+			<span class="o">}</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"industry"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][12]}"</span>
+			<span class="o">}</span>
+             add_field <span class="o">=</span>&gt; <span class="o">{</span>
+                 <span class="s2">"company_size"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][13]}"</span>
+             <span class="o">}</span>
+             add_field <span class="o">=</span>&gt; <span class="o">{</span>
+                 <span class="s2">"search"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][14]}"</span>
+             <span class="o">}</span>
+             add_field <span class="o">=</span>&gt; <span class="o">{</span>
+                 <span class="s2">"create_time"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][15]}"</span>
+             <span class="o">}</span>
+			remove_field <span class="o">=</span>&gt; <span class="o">[</span><span class="s2">"message"</span><span class="o">]</span>
+	<span class="o">}</span>
+    <span class="c"># 对json的处理 输入源是postion_label 然后decode json 并赋值给target所指定字段</span>
+    json <span class="o">{</span>
+        <span class="nb">source</span> <span class="o">=</span>&gt; <span class="s2">"position_label"</span>
+        target <span class="o">=</span>&gt; <span class="s2">"position_label_format"</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="c"># 输出 </span>
+output<span class="o">{</span>
+    <span class="c"># 输出到elasticsearch 默认运行在9200端口</span>
+	elasticsearch <span class="o">{</span>
+		hosts <span class="o">=</span>&gt; <span class="o">[</span><span class="s2">"127.0.0.1:9200"</span><span class="o">]</span>
+		    <span class="c"># 索引名称</span>
+            index <span class="o">=</span>&gt; <span class="s2">"es_lagou"</span>
+	<span class="o">}</span>
+<span class="o">}</span>
 </code></pre>
 </div>
 

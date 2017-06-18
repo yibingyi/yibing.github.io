@@ -5,8 +5,8 @@
     <description>学习 分享 坚持</description>
     <link>https://yibingyi.github.io/</link>
     <atom:link href="https://yibingyi.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 18 Jun 2017 22:44:16 +0800</pubDate>
-    <lastBuildDate>Sun, 18 Jun 2017 22:44:16 +0800</lastBuildDate>
+    <pubDate>Sun, 18 Jun 2017 22:45:42 +0800</pubDate>
+    <lastBuildDate>Sun, 18 Jun 2017 22:45:42 +0800</lastBuildDate>
     <generator>Jekyll v3.4.3</generator>
     
       <item>
@@ -484,88 +484,87 @@ crontab做定时任务，每小时抓取一次&lt;/p&gt;
 &lt;/div&gt;
 &lt;p&gt;logstash的配置文件如下，其实很好理解，logstash就是一个&lt;code class=&quot;highlighter-rouge&quot;&gt;带过滤功能的管道&lt;/code&gt;连接着水源（文件、redis、mysql）
 和水池（elasticserch等）&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; #filename:lagou.conf
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;c&quot;&gt;#filename:lagou.conf&lt;/span&gt;
  
- # 指定输入源是文件 路径为/Users/linus/Document/lagou/lagou.log
- input{
-     file{
-         path =&amp;gt; [&quot;/Users/linus/Document/lagou/lagou.log&quot;]
-     }
- }
+ &lt;span class=&quot;c&quot;&gt;# 指定输入源是文件 路径为/Users/linus/Document/lagou/lagou.log&lt;/span&gt;
+ input&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+     file&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+         path &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/Users/linus/Document/lagou/lagou.log&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+     &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+ &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 
- # 水管里面的过滤器
-filter{
-	mutate{
-	    # 将输入的以行为单位的字符串以&quot;||&quot;为界进行切割
-		split=&amp;gt;[&quot;message&quot;,&quot;||&quot;]
-		    # 0 类似数组下标
-			add_field =&amp;gt; {
-				&quot;id&quot; =&amp;gt; &quot;%{[message][0]}&quot;
-			}
-			add_field =&amp;gt; {
-				&quot;position_id&quot; =&amp;gt; &quot;%{[message][1]}&quot;
-			}
+ &lt;span class=&quot;c&quot;&gt;# 水管里面的过滤器&lt;/span&gt;
+filter&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+	mutate&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+	    &lt;span class=&quot;c&quot;&gt;# 将输入的以行为单位的字符串以&quot;||&quot;为界进行切割&lt;/span&gt;
+		&lt;span class=&quot;nv&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt;[&lt;span class=&quot;s2&quot;&gt;&quot;message&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;||&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+		    &lt;span class=&quot;c&quot;&gt;# 0 类似数组下标&lt;/span&gt;
+			add_field &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+				&lt;span class=&quot;s2&quot;&gt;&quot;id&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&quot;%{[message][0]}&quot;&lt;/span&gt;
+			&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+			add_field &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+				&lt;span class=&quot;s2&quot;&gt;&quot;position_id&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&quot;%{[message][1]}&quot;&lt;/span&gt;
+			&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 
-			add_field =&amp;gt; {
-				&quot;position&quot; =&amp;gt; &quot;%{[message][2]}&quot;
-			}
-			add_field =&amp;gt; {
-				&quot;position_label&quot; =&amp;gt; &quot;%{[message][3]}&quot;
-			}
-			add_field =&amp;gt; {
-				&quot;salary&quot; =&amp;gt; &quot;%{[message][4]}&quot;
-			}
-			add_field =&amp;gt; {
-				&quot;company&quot; =&amp;gt; &quot;%{[message][5]}&quot;
-			}
-			add_field =&amp;gt; {
-				&quot;company_logo&quot; =&amp;gt; &quot;%{[message][6]}&quot;
-			}
-			add_field =&amp;gt; {
-				&quot;company_stage&quot; =&amp;gt; &quot;%{[message][7]}&quot;
-			}
-			add_field =&amp;gt; {
-				&quot;advantage&quot; =&amp;gt; &quot;%{[message][8]}&quot;
-			}
-			add_field =&amp;gt; {
-				&quot;experience&quot; =&amp;gt; &quot;%{[message][9]}&quot;
-			}
-			add_field =&amp;gt; {
-				&quot;education&quot; =&amp;gt; &quot;%{[message][10]}&quot;
-			}
-			add_field =&amp;gt; {
-				&quot;city&quot; =&amp;gt; &quot;%{[message][11]}&quot;
-			}
-			add_field =&amp;gt; {
-				&quot;industry&quot; =&amp;gt; &quot;%{[message][12]}&quot;
-			}
-             add_field =&amp;gt; {
-                 &quot;company_size&quot; =&amp;gt; &quot;%{[message][13]}&quot;
-             }
-             add_field =&amp;gt; {
-                 &quot;search&quot; =&amp;gt; &quot;%{[message][14]}&quot;
-             }
-             add_field =&amp;gt; {
-                 &quot;create_time&quot; =&amp;gt; &quot;%{[message][15]}&quot;
-             }
-
-			remove_field =&amp;gt; [&quot;message&quot;]
-	}
-    # 对json的处理 输入源是postion_label 然后decode json 并赋值给target所指定字段
-    json {
-        source =&amp;gt; &quot;position_label&quot;
-        target =&amp;gt; &quot;position_label_format&quot;
-    }
-}
-# 输出 
-output{
-    # 输出到elasticsearch 默认运行在9200端口
-	elasticsearch {
-		hosts =&amp;gt; [&quot;127.0.0.1:9200&quot;]
-		    # 索引名称
-            index =&amp;gt; &quot;es_lagou&quot;
-	}
-}
+			add_field &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+				&lt;span class=&quot;s2&quot;&gt;&quot;position&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&quot;%{[message][2]}&quot;&lt;/span&gt;
+			&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+			add_field &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+				&lt;span class=&quot;s2&quot;&gt;&quot;position_label&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&quot;%{[message][3]}&quot;&lt;/span&gt;
+			&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+			add_field &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+				&lt;span class=&quot;s2&quot;&gt;&quot;salary&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&quot;%{[message][4]}&quot;&lt;/span&gt;
+			&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+			add_field &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+				&lt;span class=&quot;s2&quot;&gt;&quot;company&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&quot;%{[message][5]}&quot;&lt;/span&gt;
+			&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+			add_field &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+				&lt;span class=&quot;s2&quot;&gt;&quot;company_logo&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&quot;%{[message][6]}&quot;&lt;/span&gt;
+			&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+			add_field &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+				&lt;span class=&quot;s2&quot;&gt;&quot;company_stage&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&quot;%{[message][7]}&quot;&lt;/span&gt;
+			&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+			add_field &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+				&lt;span class=&quot;s2&quot;&gt;&quot;advantage&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&quot;%{[message][8]}&quot;&lt;/span&gt;
+			&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+			add_field &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+				&lt;span class=&quot;s2&quot;&gt;&quot;experience&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&quot;%{[message][9]}&quot;&lt;/span&gt;
+			&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+			add_field &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+				&lt;span class=&quot;s2&quot;&gt;&quot;education&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&quot;%{[message][10]}&quot;&lt;/span&gt;
+			&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+			add_field &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+				&lt;span class=&quot;s2&quot;&gt;&quot;city&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&quot;%{[message][11]}&quot;&lt;/span&gt;
+			&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+			add_field &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+				&lt;span class=&quot;s2&quot;&gt;&quot;industry&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&quot;%{[message][12]}&quot;&lt;/span&gt;
+			&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+             add_field &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                 &lt;span class=&quot;s2&quot;&gt;&quot;company_size&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&quot;%{[message][13]}&quot;&lt;/span&gt;
+             &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+             add_field &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                 &lt;span class=&quot;s2&quot;&gt;&quot;search&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&quot;%{[message][14]}&quot;&lt;/span&gt;
+             &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+             add_field &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                 &lt;span class=&quot;s2&quot;&gt;&quot;create_time&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&quot;%{[message][15]}&quot;&lt;/span&gt;
+             &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+			remove_field &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;message&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+	&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# 对json的处理 输入源是postion_label 然后decode json 并赋值给target所指定字段&lt;/span&gt;
+    json &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&quot;position_label&quot;&lt;/span&gt;
+        target &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&quot;position_label_format&quot;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 输出 &lt;/span&gt;
+output&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# 输出到elasticsearch 默认运行在9200端口&lt;/span&gt;
+	elasticsearch &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+		hosts &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;127.0.0.1:9200&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+		    &lt;span class=&quot;c&quot;&gt;# 索引名称&lt;/span&gt;
+            index &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&quot;es_lagou&quot;&lt;/span&gt;
+	&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
