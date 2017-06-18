@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>从爬虫到ELK</title>
+  <meta name="description" content="有天，突然心血来潮，抓了一些数据。嗯，数据已经抓回来了，那么我们如何有效的利用呢？是时候祭出ELK了。">
+  <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic|Source+Sans+Pro:400,700,200,300|Josefin+Sans:400,600,700,300' rel='stylesheet' type='text/css'>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/solarized_dark.min.css">
+  <!--<script src="https://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>-->
+  <script src="https://js.sohu.com/library/jquery-1.7.1.min.js"></script>
+  <!--<script >hljs.initHighlightingOnLoad();</script>-->
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <meta name="description" content="" />
+  <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0" name="viewport">
+
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="canonical" href="https://yibingyi.github.io/learn/tool/2017/06/16/elk-1.html">
+  <link rel="alternate" type="application/rss+xml" title="Work Life" href="https://yibingyi.github.io/feed.xml">
+</head>
+
+
+  <body>
+
+    
+<div class="wrapper">
+  <center> <a href="/index.html"><div class="site-title">   Work Life </div></a></center>
+</div>
+<div class="wrapper site-description">
+<center>  学习 分享 坚持 </center>
+</div>
+<div class="wrapper" style="text-align: center;">
+  <div class="trigger site-navigation">
+    <a class="page-link" href="https://yibingyi.github.io">HOME</a>
+
+    
+    
+
+    <span class="exclamationMark">/</span><a class="page-link" href="/about/">About</a>
+    
+    
+    
+    
+    
+    
+    
+
+    <span class="exclamationMark">/</span><a class="page-link" href="/learn/">Learn</a>
+    
+    
+    
+
+    <span class="exclamationMark">/</span><a class="page-link" href="/shell/">Shell</a>
+    
+    
+    
+    
+    
+
+    <span class="exclamationMark">/</span><a class="page-link" href="/tool/">Tool</a>
+    
+    
+    
+    
+  </div>
+</div>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline"><a class="post-title-link"  href="/learn/tool/2017/06/16/elk-1.html">从爬虫到ELK</a></h1>
+  <center>  <p class="post-meta"><time datetime="2017-06-16T19:00:00+08:00" itemprop="datePublished">Jun 16, 2017</time></p>
+    
+     <div class="">
+       <center><p ><strong><span class="authorKeyword">Author</span><span class="small-site-title"> <h2 style="letter-spacing: 3px !important;
+       text-transform: uppercase !important;">yibing</h2></span></strong></p></center>
+
+     </div>
+     
+   </center>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>有天，突然心血来潮，抓了一些数据。嗯，数据已经抓回来了，那么我们如何有效的利用呢？
+是时候祭出ELK了。</p>
+
+<p>前面说了，是心血来潮，一时之间不知道抓点什么数据，于是挑了一个好抓的，还有大家比较关心的数据
+，好吧，拉勾，我来了。</p>
+
+<p><strong>数据接口</strong></p>
+<div class="language-php highlighter-rouge"><pre class="highlight"><code>http://www.lagou.com/jobs/positionAjax.json
+</code></pre>
+</div>
+<p>接口返回值</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="p">[</span>
+    <span class="p">{</span>
+    <span class="na">companyId</span><span class="p">:</span> <span class="mi">68190</span><span class="p">,</span>
+    <span class="na">score</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="na">positionId</span><span class="p">:</span> <span class="mi">3240815</span><span class="p">,</span>
+    <span class="na">positionName</span><span class="p">:</span> <span class="s2">"SEO/SEM经理"</span><span class="p">,</span>
+    <span class="na">createTime</span><span class="p">:</span> <span class="s2">"2017-06-18 17:58:53"</span><span class="p">,</span>
+    <span class="na">positionAdvantage</span><span class="p">:</span> <span class="s2">"B轮企业,成熟产品,有爱文化"</span><span class="p">,</span>
+    <span class="na">salary</span><span class="p">:</span> <span class="s2">"8k-16k"</span><span class="p">,</span>
+    <span class="na">workYear</span><span class="p">:</span> <span class="s2">"不限"</span><span class="p">,</span>
+    <span class="na">education</span><span class="p">:</span> <span class="s2">"不限"</span><span class="p">,</span>
+    <span class="na">city</span><span class="p">:</span> <span class="s2">"北京"</span><span class="p">,</span>
+    <span class="na">companyLogo</span><span class="p">:</span> <span class="s2">"image1/M00/2B/B2/CgYXBlVxHJqAI6j5AABaKUwNZFQ142.jpg"</span><span class="p">,</span>
+    <span class="na">jobNature</span><span class="p">:</span> <span class="s2">"全职"</span><span class="p">,</span>
+    <span class="na">approve</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="na">industryField</span><span class="p">:</span> <span class="s2">"教育"</span><span class="p">,</span>
+    <span class="na">companyShortName</span><span class="p">:</span> <span class="s2">"梦腾科技北京总部"</span><span class="p">,</span>
+    <span class="na">financeStage</span><span class="p">:</span> <span class="s2">"成长型(B轮)"</span><span class="p">,</span>
+    <span class="na">positionLables</span><span class="p">:[],</span>
+    <span class="na">industryLables</span><span class="p">:[],</span>
+    <span class="na">companySize</span><span class="p">:</span> <span class="s2">"50-150人"</span><span class="p">,</span>
+    <span class="na">district</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="na">companyLabelList</span><span class="p">:</span> <span class="o">-</span> <span class="p">[</span>
+    <span class="s2">"年底双薪"</span><span class="p">,</span>
+    <span class="s2">"技能培训"</span><span class="p">,</span>
+    <span class="s2">"绩效奖金"</span><span class="p">,</span>
+    <span class="s2">"岗位晋升"</span>
+    <span class="p">],</span>
+    <span class="na">formatCreateTime</span><span class="p">:</span> <span class="s2">"17:58发布"</span><span class="p">,</span>
+    <span class="na">businessZones</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="na">imState</span><span class="p">:</span> <span class="s2">"today"</span><span class="p">,</span>
+    <span class="na">lastLogin</span><span class="p">:</span> <span class="mi">1497779372000</span><span class="p">,</span>
+    <span class="na">publisherId</span><span class="p">:</span> <span class="mi">1662895</span><span class="p">,</span>
+    <span class="na">explain</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="na">plus</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="na">pcShow</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="na">appShow</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="na">deliver</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="na">gradeDescription</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="na">promotionScoreExplain</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="na">firstType</span><span class="p">:</span> <span class="s2">"市场/商务/销售类"</span><span class="p">,</span>
+    <span class="na">secondType</span><span class="p">:</span> <span class="s2">"渠道/推广"</span><span class="p">,</span>
+    <span class="na">companyFullName</span><span class="p">:</span> <span class="s2">"上海梦腾商务信息咨询有限公司"</span><span class="p">,</span>
+    <span class="na">adWord</span><span class="p">:</span> <span class="mi">0</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</code></pre>
+</div>
+<p>由于是标准的json返回值，解析基本没有成本。采用世界上最好的语言<code class="highlighter-rouge">PHP</code>进行抓取，
+crontab做定时任务，每小时抓取一次</p>
+
+<p>PHP抓取代码示例</p>
+
+<p>接口可以接受参数进行筛选，我使用的有<code class="highlighter-rouge">kd</code>筛选词，<code class="highlighter-rouge">pn</code>筛选结果页面编号
+<code class="highlighter-rouge">city</code>城市筛选项</p>
+<div class="language-php highlighter-rouge"><pre class="highlight"><code>do {
+    // 参数数组
+    $data = ['kd' =&gt; $kd, 'pn' =&gt; $pn, 'city' =&gt; $city];
+    $res = curl_lagou($url, $data);
+    $res = json_decode($res, true);
+   
+    foreach ($res['content']['positionResult']['result'] as $item) {
+        $resElk = [];
+        $resElk['position_id'] = $item['positionId'];
+        $resElk['experice']    = $item['workYear'];
+        // 写入文件
+        $resElk = implode("||", $resElk);
+        $resElk = $resElk . "\n";
+        // 插入数据库
+        insert($tableName, $resElk);
+        file_put_contents('/Users/linus/Document/lagou/lagou.log', $resElk, FILE_APPEND);
+    }
+    $pn++;
+} while ($pn <span class="err">&lt;</span>= 400);
+
+function curl_lagou($url, $data) {
+    $ip = gen_ip();
+    $ch = curl_init();
+    $header = array(
+        "CLIENT-IP:{$ip}",
+        "X-FORWARDED-FOR:{$ip}",
+    );
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+
+    $page_content = curl_exec($ch);
+    if($error=curl_error($ch)){
+        die($error);
+    }
+    curl_close($ch);
+    return $page_content;
+}
+
+// 生成IP 恩 long2ip还是很好使 防止请求被丢弃
+function gen_ip() {
+    $ip_long = array(
+        array('607649792', '608174079'), //36.56.0.0-36.63.255.255
+        array('1038614528', '1039007743'), //61.232.0.0-61.237.255.255
+        array('1783627776', '1784676351'), //106.80.0.0-106.95.255.255
+        array('2035023872', '2035154943'), //121.76.0.0-121.77.255.255
+        array('2078801920', '2079064063'), //123.232.0.0-123.235.255.255
+        array('-1950089216', '-1948778497'), //139.196.0.0-139.215.255.255
+        array('-1425539072', '-1425014785'), //171.8.0.0-171.15.255.255
+        array('-1236271104', '-1235419137'), //182.80.0.0-182.92.255.255
+        array('-770113536', '-768606209'), //210.25.0.0-210.47.255.255
+        array('-569376768', '-564133889'), //222.16.0.0-222.95.255.255
+    );
+    $rand_key = mt_rand(0, 9);
+    $ip= long2ip(mt_rand($ip_long[$rand_key][0], $ip_long[$rand_key][1]));
+    return $ip;
+}
+</code></pre>
+</div>
+
+<p>之前没有想到要作分析，纯粹抓来图个乐！（我是有多闲!），所以打算用<code class="highlighter-rouge">Mysql</code>进行存储。这是当时用的表</p>
+
+<pre><code class="language-mysql">CREATE TABLE `lagou_position` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `position_id` bigint(20) NOT NULL,
+  `position` varchar(64) NOT NULL DEFAULT '',
+  `position_label` varchar(128) NOT NULL DEFAULT '',
+  `salary` varchar(64) NOT NULL DEFAULT '0',
+  `company` varchar(128) NOT NULL DEFAULT '',
+  `company_logo` varchar(256) NOT NULL DEFAULT '',
+  `company_stage` varchar(64) NOT NULL DEFAULT '',
+  `advantage` varchar(64) NOT NULL DEFAULT '',
+  `experience` varchar(128) NOT NULL DEFAULT '',
+  `education` varchar(64) NOT NULL DEFAULT '',
+  `city` varchar(32) NOT NULL DEFAULT '',
+  `industry` varchar(128) NOT NULL DEFAULT '',
+  `company_size` varchar(64) NOT NULL DEFAULT '',
+  `search` varchar(32) NOT NULL DEFAULT '',
+  `create_time` datetime NOT NULL,
+  `insert_time` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  key search_city (search,city),
+  key company (company)
+) ENGINE=InnoDB AUTO_INCREMENT=8473 DEFAULT CHARSET=utf8;
+</code></pre>
+
+<p>截止到现在，我们已经完成了抓取存储过程，那么接下来我们要怎么去分析这些数据呢？
+我当时是有点懵逼的。吭哧吭哧写完了代码，数据也做好了存储，恩，然后不知道要做什么了╮(╯_╰)╭。然后我想起了<code class="highlighter-rouge">ELK</code>。</p>
+
+<p>什么是ELK，简单来说就是由<code class="highlighter-rouge">elasticsearch</code><code class="highlighter-rouge">logstash</code><code class="highlighter-rouge">kibanna</code>三者构成
+<code class="highlighter-rouge">elasticsearch</code>： 强大的全文检索引擎</p>
+
+<p><code class="highlighter-rouge">logstash</code>：强大的日志收集工具</p>
+
+<p><code class="highlighter-rouge">kibanna</code> ：提供多种可视化管理和数据分析的工具</p>
+
+<p>有了这个东西是不是就顿时好玩了，0成本搭建起自己的数据分析平台（是不是不专业，嗯，确实不专业😅）
+但是很久之前就想了解下这几个东西了，所以赶紧动手搭一个起来吧。</p>
+
+<p><strong>搭建ELK环境</strong>
+直接去<a href="https://www.elastic.co/">ELK</a>获取安装包，并安装。</p>
+
+<p>启动logstash服务</p>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code><span class="c"># /usr/local/logstash-5.4.1/config/lagou.conf 以此配置启动logstash 配置细节见后文</span>
+/usr/local/logstash-5.4.1/bin/logstash -f /usr/local/logstash-5.4.1/config/lagou.conf
+</code></pre>
+</div>
+
+
+  </div>
+
+  <footer class="postNavigation">
+  
+  
+    <a class="postNext" href="/tool/2017/06/16/elk-kibana.html">
+        人见人爱Kibana &raquo;
+    </a>
+  
+  </footer>
+
+    <div id="disqus_thread"></div>
+    <script>
+        function loadDisqus () { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://bing-blog.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+            $(".loadDiscusTips").hide();
+        };
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <div class="loadDiscusTips" node-type="is-icp" style=" cursor:pointer;width:100%;text-align:center;font-size:14px;line-height:20px;background:#fdeced;color:#f0979b;font-family:'Microsoft YaHei';margin:10px 0;padding: 10px 8px;">
+        <a style="text-decoration:none"  onclick="loadDisqus()">我有梯子,我有话要说,我要加载disqus评论框</a>
+    </div>
+</article>
+
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading small-site-title">Work Life</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list footer-content">
+          <li>Powered By <a href="http://github.com/hemangsk/Gravity">Gravity</a></li>
+          <li>Made with <i class="fa fa-heart"></i> on <a href="http://jekyllrb.com"><span style="color:black">{ { Jekyll } }</a></span></li>
+
+
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2 footer-content">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/yibingyi"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">yibingyi</span></a>
+
+          </li>
+          
+
+          
+        </ul>
+      </div>
+
+      <!--<div class="footer-col footer-col-3 site-description">-->
+        <!--<p>学习 分享 坚持</p>-->
+      <!--</div>-->
+    </div>
+
+  </div>
+</footer>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?f908c18eb94615baae7fa78f6d7ba3db";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+  </body>
+
+</html>
