@@ -154,93 +154,94 @@ crontab做定时任务，每小时抓取一次</p>
 
 <p>接口可以接受参数进行筛选，我使用的有<code class="highlighter-rouge">kd</code>筛选词，<code class="highlighter-rouge">pn</code>筛选结果页面编号
 <code class="highlighter-rouge">city</code>城市筛选项</p>
-<div class="language-php highlighter-rouge"><pre class="highlight"><code>do {
-    // 参数数组
-    $data = ['kd' =&gt; $kd, 'pn' =&gt; $pn, 'city' =&gt; $city];
-    $res = curl_lagou($url, $data);
-    $res = json_decode($res, true);
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">do</span> <span class="p">{</span>
+    <span class="sr">//</span> <span class="err">参数数组</span>
+    <span class="vg">$data</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'kd'</span> <span class="o">=&gt;</span> <span class="vg">$kd</span><span class="p">,</span> <span class="s1">'pn'</span> <span class="o">=&gt;</span> <span class="vg">$pn</span><span class="p">,</span> <span class="s1">'city'</span> <span class="o">=&gt;</span> <span class="vg">$city</span><span class="p">];</span>
+    <span class="vg">$res</span> <span class="o">=</span> <span class="n">curl_lagou</span><span class="p">(</span><span class="vg">$url</span><span class="p">,</span> <span class="vg">$data</span><span class="p">);</span>
+    <span class="vg">$res</span> <span class="o">=</span> <span class="n">json_decode</span><span class="p">(</span><span class="vg">$res</span><span class="p">,</span> <span class="kp">true</span><span class="p">);</span>
    
-    foreach ($res['content']['positionResult']['result'] as $item) {
-        $resElk = [];
-        $resElk['position_id'] = $item['positionId'];
-        $resElk['experice']    = $item['workYear'];
-        // 写入文件
-        $resElk = implode("||", $resElk);
-        $resElk = $resElk . "\n";
-        // 插入数据库
-        insert($tableName, $resElk);
-        file_put_contents('/Users/linus/Document/lagou/lagou.log', $resElk, FILE_APPEND);
-    }
-    $pn++;
-} while ($pn <span class="err">&lt;</span>= 400);
+    <span class="n">foreach</span> <span class="p">(</span><span class="vg">$res</span><span class="p">[</span><span class="s1">'content'</span><span class="p">][</span><span class="s1">'positionResult'</span><span class="p">][</span><span class="s1">'result'</span><span class="p">]</span> <span class="n">as</span> <span class="vg">$item</span><span class="p">)</span> <span class="p">{</span>
+        <span class="vg">$resElk</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="vg">$resElk</span><span class="p">[</span><span class="s1">'position_id'</span><span class="p">]</span> <span class="o">=</span> <span class="vg">$item</span><span class="p">[</span><span class="s1">'positionId'</span><span class="p">];</span>
+        <span class="vg">$resElk</span><span class="p">[</span><span class="s1">'experice'</span><span class="p">]</span>    <span class="o">=</span> <span class="vg">$item</span><span class="p">[</span><span class="s1">'workYear'</span><span class="p">];</span>
+        <span class="sr">//</span> <span class="err">写入文件</span>
+        <span class="vg">$resElk</span> <span class="o">=</span> <span class="n">implode</span><span class="p">(</span><span class="s2">"||"</span><span class="p">,</span> <span class="vg">$resElk</span><span class="p">);</span>
+        <span class="vg">$resElk</span> <span class="o">=</span> <span class="vg">$resElk</span> <span class="o">.</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>
+        <span class="sr">//</span> <span class="err">插入数据库</span>
+        <span class="n">insert</span><span class="p">(</span><span class="vg">$tableName</span><span class="p">,</span> <span class="vg">$resElk</span><span class="p">);</span>
+        <span class="n">file_put_contents</span><span class="p">(</span><span class="s1">'/Users/linus/Document/lagou/lagou.log'</span><span class="p">,</span> <span class="vg">$resElk</span><span class="p">,</span> <span class="no">FILE_APPEND</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="vg">$pn</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="vg">$pn</span> <span class="o">&lt;=</span> <span class="mi">400</span><span class="p">);</span>
 
-function curl_lagou($url, $data) {
-    $ip = gen_ip();
-    $ch = curl_init();
-    $header = array(
-        "CLIENT-IP:{$ip}",
-        "X-FORWARDED-FOR:{$ip}",
-    );
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+<span class="n">function</span> <span class="n">curl_lagou</span><span class="p">(</span><span class="vg">$url</span><span class="p">,</span> <span class="vg">$data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="vg">$ip</span> <span class="o">=</span> <span class="n">gen_ip</span><span class="p">();</span>
+    <span class="vg">$ch</span> <span class="o">=</span> <span class="n">curl_init</span><span class="p">();</span>
+    <span class="vg">$header</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span>
+        <span class="s2">"CLIENT-IP:{$ip}"</span><span class="p">,</span>
+        <span class="s2">"X-FORWARDED-FOR:{$ip}"</span><span class="p">,</span>
+    <span class="p">);</span>
+    <span class="n">curl_setopt</span><span class="p">(</span><span class="vg">$ch</span><span class="p">,</span> <span class="no">CURLOPT_URL</span><span class="p">,</span> <span class="vg">$url</span><span class="p">);</span>
+    <span class="n">curl_setopt</span><span class="p">(</span><span class="vg">$ch</span><span class="p">,</span> <span class="no">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="vg">$header</span><span class="p">);</span>
+    <span class="n">curl_setopt</span><span class="p">(</span><span class="vg">$ch</span><span class="p">,</span> <span class="no">CURLOPT_RETURNTRANSFER</span><span class="p">,</span><span class="kp">true</span><span class="p">);</span>
+    <span class="n">curl_setopt</span><span class="p">(</span><span class="vg">$ch</span><span class="p">,</span> <span class="no">CURLOPT_POST</span><span class="p">,</span> <span class="kp">true</span><span class="p">);</span>
+    <span class="n">curl_setopt</span><span class="p">(</span><span class="vg">$ch</span><span class="p">,</span> <span class="no">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="n">http_build_query</span><span class="p">(</span><span class="vg">$data</span><span class="p">));</span>
 
-    $page_content = curl_exec($ch);
-    if($error=curl_error($ch)){
-        die($error);
-    }
-    curl_close($ch);
-    return $page_content;
-}
+    <span class="vg">$page_content</span> <span class="o">=</span> <span class="n">curl_exec</span><span class="p">(</span><span class="vg">$ch</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="vg">$error</span><span class="o">=</span><span class="n">curl_error</span><span class="p">(</span><span class="vg">$ch</span><span class="p">)){</span>
+        <span class="n">die</span><span class="p">(</span><span class="vg">$error</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">curl_close</span><span class="p">(</span><span class="vg">$ch</span><span class="p">);</span>
+    <span class="k">return</span> <span class="vg">$page_content</span><span class="p">;</span>
+<span class="p">}</span>
 
-// 生成IP 恩 long2ip还是很好使 防止请求被丢弃
-function gen_ip() {
-    $ip_long = array(
-        array('607649792', '608174079'), //36.56.0.0-36.63.255.255
-        array('1038614528', '1039007743'), //61.232.0.0-61.237.255.255
-        array('1783627776', '1784676351'), //106.80.0.0-106.95.255.255
-        array('2035023872', '2035154943'), //121.76.0.0-121.77.255.255
-        array('2078801920', '2079064063'), //123.232.0.0-123.235.255.255
-        array('-1950089216', '-1948778497'), //139.196.0.0-139.215.255.255
-        array('-1425539072', '-1425014785'), //171.8.0.0-171.15.255.255
-        array('-1236271104', '-1235419137'), //182.80.0.0-182.92.255.255
-        array('-770113536', '-768606209'), //210.25.0.0-210.47.255.255
-        array('-569376768', '-564133889'), //222.16.0.0-222.95.255.255
-    );
-    $rand_key = mt_rand(0, 9);
-    $ip= long2ip(mt_rand($ip_long[$rand_key][0], $ip_long[$rand_key][1]));
-    return $ip;
-}
+<span class="sr">//</span> <span class="err">生成</span><span class="no">IP</span> <span class="err">恩</span> <span class="n">long2ip</span><span class="err">还是很好使</span> <span class="err">防止请求被丢弃</span>
+<span class="n">function</span> <span class="n">gen_ip</span><span class="p">()</span> <span class="p">{</span>
+    <span class="vg">$ip_long</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span>
+        <span class="n">array</span><span class="p">(</span><span class="s1">'607649792'</span><span class="p">,</span> <span class="s1">'608174079'</span><span class="p">),</span> <span class="sr">//</span><span class="mi">36</span><span class="o">.</span><span class="mi">56</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="mi">36</span><span class="o">.</span><span class="mi">63</span><span class="o">.</span><span class="mi">255</span><span class="o">.</span><span class="mi">255</span>
+        <span class="n">array</span><span class="p">(</span><span class="s1">'1038614528'</span><span class="p">,</span> <span class="s1">'1039007743'</span><span class="p">),</span> <span class="sr">//</span><span class="mi">61</span><span class="o">.</span><span class="mi">232</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="mi">61</span><span class="o">.</span><span class="mi">237</span><span class="o">.</span><span class="mi">255</span><span class="o">.</span><span class="mi">255</span>
+        <span class="n">array</span><span class="p">(</span><span class="s1">'1783627776'</span><span class="p">,</span> <span class="s1">'1784676351'</span><span class="p">),</span> <span class="sr">//</span><span class="mi">106</span><span class="o">.</span><span class="mi">80</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="mi">106</span><span class="o">.</span><span class="mi">95</span><span class="o">.</span><span class="mi">255</span><span class="o">.</span><span class="mi">255</span>
+        <span class="n">array</span><span class="p">(</span><span class="s1">'2035023872'</span><span class="p">,</span> <span class="s1">'2035154943'</span><span class="p">),</span> <span class="sr">//</span><span class="mi">121</span><span class="o">.</span><span class="mi">76</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="mi">121</span><span class="o">.</span><span class="mi">77</span><span class="o">.</span><span class="mi">255</span><span class="o">.</span><span class="mi">255</span>
+        <span class="n">array</span><span class="p">(</span><span class="s1">'2078801920'</span><span class="p">,</span> <span class="s1">'2079064063'</span><span class="p">),</span> <span class="sr">//</span><span class="mi">123</span><span class="o">.</span><span class="mi">232</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="mi">123</span><span class="o">.</span><span class="mi">235</span><span class="o">.</span><span class="mi">255</span><span class="o">.</span><span class="mi">255</span>
+        <span class="n">array</span><span class="p">(</span><span class="s1">'-1950089216'</span><span class="p">,</span> <span class="s1">'-1948778497'</span><span class="p">),</span> <span class="sr">//</span><span class="mi">139</span><span class="o">.</span><span class="mi">196</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="mi">139</span><span class="o">.</span><span class="mi">215</span><span class="o">.</span><span class="mi">255</span><span class="o">.</span><span class="mi">255</span>
+        <span class="n">array</span><span class="p">(</span><span class="s1">'-1425539072'</span><span class="p">,</span> <span class="s1">'-1425014785'</span><span class="p">),</span> <span class="sr">//</span><span class="mi">171</span><span class="o">.</span><span class="mi">8</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="mi">171</span><span class="o">.</span><span class="mi">15</span><span class="o">.</span><span class="mi">255</span><span class="o">.</span><span class="mi">255</span>
+        <span class="n">array</span><span class="p">(</span><span class="s1">'-1236271104'</span><span class="p">,</span> <span class="s1">'-1235419137'</span><span class="p">),</span> <span class="sr">//</span><span class="mi">182</span><span class="o">.</span><span class="mi">80</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="mi">182</span><span class="o">.</span><span class="mi">92</span><span class="o">.</span><span class="mi">255</span><span class="o">.</span><span class="mi">255</span>
+        <span class="n">array</span><span class="p">(</span><span class="s1">'-770113536'</span><span class="p">,</span> <span class="s1">'-768606209'</span><span class="p">),</span> <span class="sr">//</span><span class="mi">210</span><span class="o">.</span><span class="mi">25</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="mi">210</span><span class="o">.</span><span class="mi">47</span><span class="o">.</span><span class="mi">255</span><span class="o">.</span><span class="mi">255</span>
+        <span class="n">array</span><span class="p">(</span><span class="s1">'-569376768'</span><span class="p">,</span> <span class="s1">'-564133889'</span><span class="p">),</span> <span class="sr">//</span><span class="mi">222</span><span class="o">.</span><span class="mi">16</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="mi">222</span><span class="o">.</span><span class="mi">95</span><span class="o">.</span><span class="mi">255</span><span class="o">.</span><span class="mi">255</span>
+    <span class="p">);</span>
+    <span class="vg">$rand_key</span> <span class="o">=</span> <span class="n">mt_rand</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">);</span>
+    <span class="vg">$ip</span><span class="o">=</span> <span class="n">long2ip</span><span class="p">(</span><span class="n">mt_rand</span><span class="p">(</span><span class="vg">$ip_long</span><span class="p">[</span><span class="vg">$rand_key</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="vg">$ip_long</span><span class="p">[</span><span class="vg">$rand_key</span><span class="p">][</span><span class="mi">1</span><span class="p">]));</span>
+    <span class="k">return</span> <span class="vg">$ip</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre>
 </div>
 
 <p>之前没有想到要作分析，纯粹抓来图个乐！（我是有多闲!），所以打算用<code class="highlighter-rouge">Mysql</code>进行存储。这是当时用的表</p>
 
-<pre><code class="language-mysql">CREATE TABLE `lagou_position` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `position_id` bigint(20) NOT NULL,
-  `position` varchar(64) NOT NULL DEFAULT '',
-  `position_label` varchar(128) NOT NULL DEFAULT '',
-  `salary` varchar(64) NOT NULL DEFAULT '0',
-  `company` varchar(128) NOT NULL DEFAULT '',
-  `company_logo` varchar(256) NOT NULL DEFAULT '',
-  `company_stage` varchar(64) NOT NULL DEFAULT '',
-  `advantage` varchar(64) NOT NULL DEFAULT '',
-  `experience` varchar(128) NOT NULL DEFAULT '',
-  `education` varchar(64) NOT NULL DEFAULT '',
-  `city` varchar(32) NOT NULL DEFAULT '',
-  `industry` varchar(128) NOT NULL DEFAULT '',
-  `company_size` varchar(64) NOT NULL DEFAULT '',
-  `search` varchar(32) NOT NULL DEFAULT '',
-  `create_time` datetime NOT NULL,
-  `insert_time` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  key search_city (search,city),
-  key company (company)
-) ENGINE=InnoDB AUTO_INCREMENT=8473 DEFAULT CHARSET=utf8;
+<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="nv">`lagou_position`</span> <span class="p">(</span>
+  <span class="nv">`id`</span> <span class="n">bigint</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="n">unsigned</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="n">AUTO_INCREMENT</span><span class="p">,</span>
+  <span class="nv">`position_id`</span> <span class="n">bigint</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="nv">`position`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">''</span><span class="p">,</span>
+  <span class="nv">`position_label`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">''</span><span class="p">,</span>
+  <span class="nv">`salary`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">'0'</span><span class="p">,</span>
+  <span class="nv">`company`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">''</span><span class="p">,</span>
+  <span class="nv">`company_logo`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">256</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">''</span><span class="p">,</span>
+  <span class="nv">`company_stage`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">''</span><span class="p">,</span>
+  <span class="nv">`advantage`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">''</span><span class="p">,</span>
+  <span class="nv">`experience`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">''</span><span class="p">,</span>
+  <span class="nv">`education`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">''</span><span class="p">,</span>
+  <span class="nv">`city`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">''</span><span class="p">,</span>
+  <span class="nv">`industry`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">''</span><span class="p">,</span>
+  <span class="nv">`company_size`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">''</span><span class="p">,</span>
+  <span class="nv">`search`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">''</span><span class="p">,</span>
+  <span class="nv">`create_time`</span> <span class="n">datetime</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="nv">`insert_time`</span> <span class="n">datetime</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="nv">`id`</span><span class="p">),</span>
+  <span class="k">key</span> <span class="n">search_city</span> <span class="p">(</span><span class="k">search</span><span class="p">,</span><span class="n">city</span><span class="p">),</span>
+  <span class="k">key</span> <span class="n">company</span> <span class="p">(</span><span class="n">company</span><span class="p">)</span>
+<span class="p">)</span> <span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span> <span class="n">AUTO_INCREMENT</span><span class="o">=</span><span class="mi">8473</span> <span class="k">DEFAULT</span> <span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8</span><span class="p">;</span>
 </code></pre>
+</div>
 
 <p>截止到现在，我们已经完成了抓取存储过程，那么接下来我们要怎么去分析这些数据呢？
 我当时是有点懵逼的。吭哧吭哧写完了代码，数据也做好了存储，恩，然后不知道要做什么了╮(╯_╰)╭。然后我想起了<code class="highlighter-rouge">ELK</code>。</p>
@@ -264,6 +265,105 @@ function gen_ip() {
 /usr/local/logstash-5.4.1/bin/logstash -f /usr/local/logstash-5.4.1/config/lagou.conf
 </code></pre>
 </div>
+<p>logstash的配置文件如下，其实很好理解，logstash就是一个<code class="highlighter-rouge">带过滤功能的管道</code>连接着水源（文件、redis、mysql）
+和水池（elasticserch等）</p>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code> <span class="c">#filename:lagou.conf</span>
+ 
+ <span class="c"># 指定输入源是文件 路径为/Users/linus/Document/lagou/lagou.log</span>
+ input<span class="o">{</span>
+     file<span class="o">{</span>
+         path <span class="o">=</span>&gt; <span class="o">[</span><span class="s2">"/Users/linus/Document/lagou/lagou.log"</span><span class="o">]</span>
+     <span class="o">}</span>
+ <span class="o">}</span>
+
+ <span class="c"># 水管里面的过滤器</span>
+filter<span class="o">{</span>
+	mutate<span class="o">{</span>
+	    <span class="c"># 将输入的以行为单位的字符串以"||"为界进行切割</span>
+		<span class="nv">split</span><span class="o">=</span>&gt;[<span class="s2">"message"</span>,<span class="s2">"||"</span><span class="o">]</span>
+		    <span class="c"># 0 类似数组下标</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"id"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][0]}"</span>
+			<span class="o">}</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"position_id"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][1]}"</span>
+			<span class="o">}</span>
+
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"position"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][2]}"</span>
+			<span class="o">}</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"position_label"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][3]}"</span>
+			<span class="o">}</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"salary"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][4]}"</span>
+			<span class="o">}</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"company"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][5]}"</span>
+			<span class="o">}</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"company_logo"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][6]}"</span>
+			<span class="o">}</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"company_stage"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][7]}"</span>
+			<span class="o">}</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"advantage"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][8]}"</span>
+			<span class="o">}</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"experience"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][9]}"</span>
+			<span class="o">}</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"education"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][10]}"</span>
+			<span class="o">}</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"city"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][11]}"</span>
+			<span class="o">}</span>
+			add_field <span class="o">=</span>&gt; <span class="o">{</span>
+				<span class="s2">"industry"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][12]}"</span>
+			<span class="o">}</span>
+             add_field <span class="o">=</span>&gt; <span class="o">{</span>
+                 <span class="s2">"company_size"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][13]}"</span>
+             <span class="o">}</span>
+             add_field <span class="o">=</span>&gt; <span class="o">{</span>
+                 <span class="s2">"search"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][14]}"</span>
+             <span class="o">}</span>
+             add_field <span class="o">=</span>&gt; <span class="o">{</span>
+                 <span class="s2">"create_time"</span> <span class="o">=</span>&gt; <span class="s2">"%{[message][15]}"</span>
+             <span class="o">}</span>
+
+			remove_field <span class="o">=</span>&gt; <span class="o">[</span><span class="s2">"message"</span><span class="o">]</span>
+	<span class="o">}</span>
+    <span class="c"># 对json的处理 输入源是postion_label 然后decode json 并赋值给target所指定字段</span>
+    json <span class="o">{</span>
+        <span class="nb">source</span> <span class="o">=</span>&gt; <span class="s2">"position_label"</span>
+        target <span class="o">=</span>&gt; <span class="s2">"position_label_format"</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="c"># 输出 </span>
+output<span class="o">{</span>
+    <span class="c"># 输出到elasticsearch 默认运行在9200端口</span>
+	elasticsearch <span class="o">{</span>
+		hosts <span class="o">=</span>&gt; <span class="o">[</span><span class="s2">"127.0.0.1:9200"</span><span class="o">]</span>
+		    <span class="c"># 索引名称</span>
+            index <span class="o">=</span>&gt; <span class="s2">"es_lagou"</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>启动kibana服务</p>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>sudo ./bin/kibana
+</code></pre>
+</div>
+<p>kibana启动后会运营在本机的<code class="highlighter-rouge">5601</code>端口 直接在浏览器中打开即可</p>
+
+<p>启动elasticsearch服务  默认运行在9200端口 支持restful api</p>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>sudo ./bin/elasticsearch
+</code></pre>
+</div>
+
+<p>至此，我们从数据生产，到存储，最后到数据分析都搭建了完备的系统，可以开始玩了。</p>
 
 
   </div>
