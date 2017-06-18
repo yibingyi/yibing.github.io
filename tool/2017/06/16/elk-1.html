@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>从爬虫到ELK</title>
-  <meta name="description" content="有天，突然心血来潮，抓了一些数据。嗯，数据已经抓回来了，那么我们如何有效的利用呢？是时候祭出ELK了">
+  <meta name="description" content="有天，突然心血来潮，抓了一些数据。嗯，数据已经抓回来了，那么我们如何有效的利用呢？是时候祭出ELK了。">
   <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic|Source+Sans+Pro:400,700,200,300|Josefin+Sans:400,600,700,300' rel='stylesheet' type='text/css'>
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/solarized_dark.min.css">
@@ -89,7 +89,64 @@
 
   <div class="post-content" itemprop="articleBody">
     <p>有天，突然心血来潮，抓了一些数据。嗯，数据已经抓回来了，那么我们如何有效的利用呢？
-是时候祭出ELK了</p>
+是时候祭出ELK了。</p>
+
+<p>前面说了，是心血来潮，一时之间不知道抓点什么数据，于是挑了一个好抓的，还有大家比较关心的数据
+，好吧，拉勾，我来了。</p>
+
+<p><strong>数据接口</strong></p>
+<div class="language-php highlighter-rouge"><pre class="highlight"><code>http://www.lagou.com/jobs/positionAjax.json
+</code></pre>
+</div>
+<p>接口返回值</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="p">[</span>
+    <span class="p">{</span>
+    <span class="na">companyId</span><span class="p">:</span> <span class="mi">68190</span><span class="p">,</span>
+    <span class="na">score</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="na">positionId</span><span class="p">:</span> <span class="mi">3240815</span><span class="p">,</span>
+    <span class="na">positionName</span><span class="p">:</span> <span class="s2">"SEO/SEM经理"</span><span class="p">,</span>
+    <span class="na">createTime</span><span class="p">:</span> <span class="s2">"2017-06-18 17:58:53"</span><span class="p">,</span>
+    <span class="na">positionAdvantage</span><span class="p">:</span> <span class="s2">"B轮企业,成熟产品,有爱文化"</span><span class="p">,</span>
+    <span class="na">salary</span><span class="p">:</span> <span class="s2">"8k-16k"</span><span class="p">,</span>
+    <span class="na">workYear</span><span class="p">:</span> <span class="s2">"不限"</span><span class="p">,</span>
+    <span class="na">education</span><span class="p">:</span> <span class="s2">"不限"</span><span class="p">,</span>
+    <span class="na">city</span><span class="p">:</span> <span class="s2">"北京"</span><span class="p">,</span>
+    <span class="na">companyLogo</span><span class="p">:</span> <span class="s2">"image1/M00/2B/B2/CgYXBlVxHJqAI6j5AABaKUwNZFQ142.jpg"</span><span class="p">,</span>
+    <span class="na">jobNature</span><span class="p">:</span> <span class="s2">"全职"</span><span class="p">,</span>
+    <span class="na">approve</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="na">industryField</span><span class="p">:</span> <span class="s2">"教育"</span><span class="p">,</span>
+    <span class="na">companyShortName</span><span class="p">:</span> <span class="s2">"梦腾科技北京总部"</span><span class="p">,</span>
+    <span class="na">financeStage</span><span class="p">:</span> <span class="s2">"成长型(B轮)"</span><span class="p">,</span>
+    <span class="na">positionLables</span><span class="p">:[],</span>
+    <span class="na">industryLables</span><span class="p">:[],</span>
+    <span class="na">companySize</span><span class="p">:</span> <span class="s2">"50-150人"</span><span class="p">,</span>
+    <span class="na">district</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="na">companyLabelList</span><span class="p">:</span> <span class="o">-</span> <span class="p">[</span>
+    <span class="s2">"年底双薪"</span><span class="p">,</span>
+    <span class="s2">"技能培训"</span><span class="p">,</span>
+    <span class="s2">"绩效奖金"</span><span class="p">,</span>
+    <span class="s2">"岗位晋升"</span>
+    <span class="p">],</span>
+    <span class="na">formatCreateTime</span><span class="p">:</span> <span class="s2">"17:58发布"</span><span class="p">,</span>
+    <span class="na">businessZones</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="na">imState</span><span class="p">:</span> <span class="s2">"today"</span><span class="p">,</span>
+    <span class="na">lastLogin</span><span class="p">:</span> <span class="mi">1497779372000</span><span class="p">,</span>
+    <span class="na">publisherId</span><span class="p">:</span> <span class="mi">1662895</span><span class="p">,</span>
+    <span class="na">explain</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="na">plus</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="na">pcShow</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="na">appShow</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="na">deliver</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="na">gradeDescription</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="na">promotionScoreExplain</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="na">firstType</span><span class="p">:</span> <span class="s2">"市场/商务/销售类"</span><span class="p">,</span>
+    <span class="na">secondType</span><span class="p">:</span> <span class="s2">"渠道/推广"</span><span class="p">,</span>
+    <span class="na">companyFullName</span><span class="p">:</span> <span class="s2">"上海梦腾商务信息咨询有限公司"</span><span class="p">,</span>
+    <span class="na">adWord</span><span class="p">:</span> <span class="mi">0</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</code></pre>
+</div>
 
 
   </div>
