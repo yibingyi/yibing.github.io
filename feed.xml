@@ -5,13 +5,18 @@
     <description>学习 分享 坚持</description>
     <link>https://yibingyi.github.io/</link>
     <atom:link href="https://yibingyi.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 19 Jun 2017 01:05:32 +0800</pubDate>
-    <lastBuildDate>Mon, 19 Jun 2017 01:05:32 +0800</lastBuildDate>
+    <pubDate>Mon, 19 Jun 2017 01:10:47 +0800</pubDate>
+    <lastBuildDate>Mon, 19 Jun 2017 01:10:47 +0800</lastBuildDate>
     <generator>Jekyll v3.4.3</generator>
     
       <item>
         <title>日志收集工具logstash</title>
-        <description>&lt;h3 id=&quot;什么是-logstash为什么要用-logstash怎么用-logstash&quot;&gt;什么是 Logstash？为什么要用 Logstash？怎么用 Logstash？&lt;/h3&gt;
+        <description>&lt;h4 id=&quot;什么是-logstash为什么要用-logstash怎么用-logstash&quot;&gt;什么是 Logstash？为什么要用 Logstash？怎么用 Logstash？&lt;/h4&gt;
+
+&lt;p&gt;logstash是一个数据收集工具，在我个人来看，更像是一个多功能的管道，
+大家都知道&lt;code class=&quot;highlighter-rouge&quot;&gt;|&lt;/code&gt;是linux操作系统中的管道符号，是的logstash就很像它，并且
+它比管道符提供了更多的功能。借助于各种插件，可以帮助你对数据进行修剪，处理，过滤等等操作，
+甚至可以进行各种逻辑运算。&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;hello world&lt;/strong&gt;&lt;/p&gt;
 
