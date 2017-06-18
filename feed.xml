@@ -5,8 +5,8 @@
     <description>学习 分享 坚持</description>
     <link>https://yibingyi.github.io/</link>
     <atom:link href="https://yibingyi.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 18 Jun 2017 18:49:34 +0800</pubDate>
-    <lastBuildDate>Sun, 18 Jun 2017 18:49:34 +0800</lastBuildDate>
+    <pubDate>Sun, 18 Jun 2017 21:32:41 +0800</pubDate>
+    <lastBuildDate>Sun, 18 Jun 2017 21:32:41 +0800</lastBuildDate>
     <generator>Jekyll v3.4.3</generator>
     
       <item>
@@ -462,8 +462,9 @@ function gen_ip() {
 &lt;p&gt;截止到现在，我们已经完成了抓取存储过程，那么接下来我们要怎么去分析这些数据呢？
 我当时是有点懵逼的。吭哧吭哧写完了代码，数据也做好了存储，恩，然后不知道要做什么了╮(╯_╰)╭。然后我想起了&lt;code class=&quot;highlighter-rouge&quot;&gt;ELK&lt;/code&gt;。&lt;/p&gt;
 
-&lt;p&gt;什么是ELK，简单来说就是由&lt;code class=&quot;highlighter-rouge&quot;&gt;elasticsearch&lt;/code&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;logstash&lt;/code&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kibanna&lt;/code&gt;三者构成
-&lt;code class=&quot;highlighter-rouge&quot;&gt;elasticsearch&lt;/code&gt;： 强大的全文检索引擎&lt;/p&gt;
+&lt;p&gt;什么是ELK，简单来说就是由&lt;code class=&quot;highlighter-rouge&quot;&gt;elasticsearch&lt;/code&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;logstash&lt;/code&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kibanna&lt;/code&gt;三者构成&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;elasticsearch&lt;/code&gt;： 强大的全文检索引擎&lt;/p&gt;
 
 &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;logstash&lt;/code&gt;：强大的日志收集工具&lt;/p&gt;
 
