@@ -5,8 +5,8 @@
     <description>学习 分享 坚持</description>
     <link>https://yibingyi.github.io/</link>
     <atom:link href="https://yibingyi.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 18 Jun 2017 18:02:56 +0800</pubDate>
-    <lastBuildDate>Sun, 18 Jun 2017 18:02:56 +0800</lastBuildDate>
+    <pubDate>Sun, 18 Jun 2017 18:49:34 +0800</pubDate>
+    <lastBuildDate>Sun, 18 Jun 2017 18:49:34 +0800</lastBuildDate>
     <generator>Jekyll v3.4.3</generator>
     
       <item>
@@ -364,12 +364,130 @@ step5: 心好累💔&lt;/p&gt;
 &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
+&lt;p&gt;由于是标准的json返回值，解析基本没有成本。采用世界上最好的语言&lt;code class=&quot;highlighter-rouge&quot;&gt;PHP&lt;/code&gt;进行抓取，
+crontab做定时任务，每小时抓取一次&lt;/p&gt;
+
+&lt;p&gt;PHP抓取代码示例&lt;/p&gt;
+
+&lt;p&gt;接口可以接受参数进行筛选，我使用的有&lt;code class=&quot;highlighter-rouge&quot;&gt;kd&lt;/code&gt;筛选词，&lt;code class=&quot;highlighter-rouge&quot;&gt;pn&lt;/code&gt;筛选结果页面编号
+&lt;code class=&quot;highlighter-rouge&quot;&gt;city&lt;/code&gt;城市筛选项&lt;/p&gt;
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;do {
+    // 参数数组
+    $data = ['kd' =&amp;gt; $kd, 'pn' =&amp;gt; $pn, 'city' =&amp;gt; $city];
+    $res = curl_lagou($url, $data);
+    $res = json_decode($res, true);
+   
+    foreach ($res['content']['positionResult']['result'] as $item) {
+        $resElk = [];
+        $resElk['position_id'] = $item['positionId'];
+        $resElk['experice']    = $item['workYear'];
+        // 写入文件
+        $resElk = implode(&quot;||&quot;, $resElk);
+        $resElk = $resElk . &quot;\n&quot;;
+        // 插入数据库
+        insert($tableName, $resElk);
+        file_put_contents('/Users/linus/Document/lagou/lagou.log', $resElk, FILE_APPEND);
+    }
+    $pn++;
+} while ($pn &lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;= 400);
+
+function curl_lagou($url, $data) {
+    $ip = gen_ip();
+    $ch = curl_init();
+    $header = array(
+        &quot;CLIENT-IP:{$ip}&quot;,
+        &quot;X-FORWARDED-FOR:{$ip}&quot;,
+    );
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+
+    $page_content = curl_exec($ch);
+    if($error=curl_error($ch)){
+        die($error);
+    }
+    curl_close($ch);
+    return $page_content;
+}
+
+// 生成IP 恩 long2ip还是很好使 防止请求被丢弃
+function gen_ip() {
+    $ip_long = array(
+        array('607649792', '608174079'), //36.56.0.0-36.63.255.255
+        array('1038614528', '1039007743'), //61.232.0.0-61.237.255.255
+        array('1783627776', '1784676351'), //106.80.0.0-106.95.255.255
+        array('2035023872', '2035154943'), //121.76.0.0-121.77.255.255
+        array('2078801920', '2079064063'), //123.232.0.0-123.235.255.255
+        array('-1950089216', '-1948778497'), //139.196.0.0-139.215.255.255
+        array('-1425539072', '-1425014785'), //171.8.0.0-171.15.255.255
+        array('-1236271104', '-1235419137'), //182.80.0.0-182.92.255.255
+        array('-770113536', '-768606209'), //210.25.0.0-210.47.255.255
+        array('-569376768', '-564133889'), //222.16.0.0-222.95.255.255
+    );
+    $rand_key = mt_rand(0, 9);
+    $ip= long2ip(mt_rand($ip_long[$rand_key][0], $ip_long[$rand_key][1]));
+    return $ip;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;之前没有想到要作分析，纯粹抓来图个乐！（我是有多闲!），所以打算用&lt;code class=&quot;highlighter-rouge&quot;&gt;Mysql&lt;/code&gt;进行存储。这是当时用的表&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-mysql&quot;&gt;CREATE TABLE `lagou_position` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `position_id` bigint(20) NOT NULL,
+  `position` varchar(64) NOT NULL DEFAULT '',
+  `position_label` varchar(128) NOT NULL DEFAULT '',
+  `salary` varchar(64) NOT NULL DEFAULT '0',
+  `company` varchar(128) NOT NULL DEFAULT '',
+  `company_logo` varchar(256) NOT NULL DEFAULT '',
+  `company_stage` varchar(64) NOT NULL DEFAULT '',
+  `advantage` varchar(64) NOT NULL DEFAULT '',
+  `experience` varchar(128) NOT NULL DEFAULT '',
+  `education` varchar(64) NOT NULL DEFAULT '',
+  `city` varchar(32) NOT NULL DEFAULT '',
+  `industry` varchar(128) NOT NULL DEFAULT '',
+  `company_size` varchar(64) NOT NULL DEFAULT '',
+  `search` varchar(32) NOT NULL DEFAULT '',
+  `create_time` datetime NOT NULL,
+  `insert_time` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  key search_city (search,city),
+  key company (company)
+) ENGINE=InnoDB AUTO_INCREMENT=8473 DEFAULT CHARSET=utf8;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;截止到现在，我们已经完成了抓取存储过程，那么接下来我们要怎么去分析这些数据呢？
+我当时是有点懵逼的。吭哧吭哧写完了代码，数据也做好了存储，恩，然后不知道要做什么了╮(╯_╰)╭。然后我想起了&lt;code class=&quot;highlighter-rouge&quot;&gt;ELK&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;什么是ELK，简单来说就是由&lt;code class=&quot;highlighter-rouge&quot;&gt;elasticsearch&lt;/code&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;logstash&lt;/code&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kibanna&lt;/code&gt;三者构成
+&lt;code class=&quot;highlighter-rouge&quot;&gt;elasticsearch&lt;/code&gt;： 强大的全文检索引擎&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;logstash&lt;/code&gt;：强大的日志收集工具&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;kibanna&lt;/code&gt; ：提供多种可视化管理和数据分析的工具&lt;/p&gt;
+
+&lt;p&gt;有了这个东西是不是就顿时好玩了，0成本搭建起自己的数据分析平台（是不是不专业，嗯，确实不专业😅）
+但是很久之前就想了解下这几个东西了，所以赶紧动手搭一个起来吧。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;搭建ELK环境&lt;/strong&gt;
+直接去&lt;a href=&quot;https://www.elastic.co/&quot;&gt;ELK&lt;/a&gt;获取安装包，并安装。&lt;/p&gt;
+
+&lt;p&gt;启动logstash服务&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# /usr/local/logstash-5.4.1/config/lagou.conf 以此配置启动logstash 配置细节见后文&lt;/span&gt;
+/usr/local/logstash-5.4.1/bin/logstash -f /usr/local/logstash-5.4.1/config/lagou.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 </description>
         <pubDate>Fri, 16 Jun 2017 19:00:00 +0800</pubDate>
-        <link>https://yibingyi.github.io/tool/2017/06/16/elk-1.html</link>
-        <guid isPermaLink="true">https://yibingyi.github.io/tool/2017/06/16/elk-1.html</guid>
+        <link>https://yibingyi.github.io/learn/tool/2017/06/16/elk-1.html</link>
+        <guid isPermaLink="true">https://yibingyi.github.io/learn/tool/2017/06/16/elk-1.html</guid>
         
+        
+        <category>learn</category>
         
         <category>tool</category>
         
