@@ -5,8 +5,8 @@
     <description>学习 分享 坚持</description>
     <link>https://yibingyi.github.io/</link>
     <atom:link href="https://yibingyi.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 19 Jun 2017 14:04:02 +0800</pubDate>
-    <lastBuildDate>Mon, 19 Jun 2017 14:04:02 +0800</lastBuildDate>
+    <pubDate>Mon, 19 Jun 2017 14:04:47 +0800</pubDate>
+    <lastBuildDate>Mon, 19 Jun 2017 14:04:47 +0800</lastBuildDate>
     <generator>Jekyll v3.4.3</generator>
     
       <item>
@@ -442,7 +442,7 @@ sed /used/ !s/new/used/g
 
 &lt;p&gt;step1: 很开心的完成了&lt;code class=&quot;highlighter-rouge&quot;&gt;disqus&lt;/code&gt;的配置和部署&lt;br /&gt;
 step2: 发现被墙了，(ーー゛)不开心&lt;br /&gt;
-step3: 找替代方案，&lt;code class=&quot;highlighter-rouge&quot;&gt;有言&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;畅言&lt;/code&gt;，好丑，并且&lt;code class=&quot;highlighter-rouge&quot;&gt;有言&lt;/code&gt;不支持https&lt;br /&gt;
+step3: 找替代方案，有言、畅言，好丑，并且有言不支持https&lt;br /&gt;
 step4: 回归&lt;code class=&quot;highlighter-rouge&quot;&gt;disqus&lt;/code&gt;，采用懒加载的方式&lt;br /&gt;
 step5: 心好累💔&lt;/p&gt;
 </description>
