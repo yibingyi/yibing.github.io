@@ -5,8 +5,8 @@
     <description>学习 分享 坚持</description>
     <link>https://yibingyi.github.io/</link>
     <atom:link href="https://yibingyi.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 04 Jul 2017 21:06:38 +0800</pubDate>
-    <lastBuildDate>Tue, 04 Jul 2017 21:06:38 +0800</lastBuildDate>
+    <pubDate>Tue, 04 Jul 2017 21:10:02 +0800</pubDate>
+    <lastBuildDate>Tue, 04 Jul 2017 21:10:02 +0800</lastBuildDate>
     <generator>Jekyll v3.4.3</generator>
     
       <item>
@@ -208,7 +208,7 @@ china
       </item>
     
       <item>
-        <title>shell学习笔记-基础知识（一）</title>
+        <title>shell基础</title>
         <description>&lt;p&gt;&lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;|&lt;/code&gt; 管道符&lt;/strong&gt;&lt;/p&gt;
 
 &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#将前一个命令作为后一个命令的输入&lt;/span&gt;
@@ -316,7 +316,7 @@ chmod +x tracel.sh
       </item>
     
       <item>
-        <title>shell学习笔记-文本操作（二）</title>
+        <title>sed命令实例</title>
         <description>&lt;p&gt;&lt;strong&gt;初识sed&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;正则 &lt;code class=&quot;highlighter-rouge&quot;&gt;^&lt;/code&gt; 匹配紧接的正则表达式，在行或字符串的起始处 
