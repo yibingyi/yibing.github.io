@@ -5,8 +5,8 @@
     <description>学习 分享 坚持</description>
     <link>https://yibingyi.github.io/</link>
     <atom:link href="https://yibingyi.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 21 Jun 2017 18:00:34 +0800</pubDate>
-    <lastBuildDate>Wed, 21 Jun 2017 18:00:34 +0800</lastBuildDate>
+    <pubDate>Tue, 04 Jul 2017 20:51:05 +0800</pubDate>
+    <lastBuildDate>Tue, 04 Jul 2017 20:51:05 +0800</lastBuildDate>
     <generator>Jekyll v3.4.3</generator>
     
       <item>
@@ -122,46 +122,9 @@ bin/logstash-plugin install /path/to/logstash-filter-crash.gem
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;在运行结果中我们看到，输出的内容中加上了 key =&amp;gt; value,并且打上了tag&lt;/p&gt;
-&lt;/blockquote&gt;
 
-&lt;p&gt;tag和type 有什么用？&lt;/p&gt;
-
-&lt;p&gt;通常我们会在后面的插件中用到type和tag，配置文件看起来不好理解，我们继续学习吧&lt;/p&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;input &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    stdin &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&quot;web&quot;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-filter &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    // logstash 的逻辑控制语句
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;web&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        grok &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            match &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;message&quot;&lt;/span&gt;, %&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;COMBINEDAPACHELOG&lt;span class=&quot;o&quot;&gt;}]&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-output &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;_grokparsefailure&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;tags] &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        nagios_nsca &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            nagios_status &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;gt; &lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        elasticsearch &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;下面从一个实例开始逐渐深入&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;strong&gt;logstash 收集Syslog&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://linux.cn/article-5023-1.html&quot;&gt;Syslog&lt;/a&gt; 可能是运维领域最流行的数据传输协议了。当你想从设备上收集系统日志的时候，&lt;a href=&quot;https://linux.cn/article-5023-1.html&quot;&gt;Syslog&lt;/a&gt; 应该会是你的第一选择。尤其是网络设备，比如思科 —— &lt;a href=&quot;https://linux.cn/article-5023-1.html&quot;&gt;Syslog&lt;/a&gt; 几乎是唯一可行的办法。&lt;/p&gt;
+&lt;p&gt;以上，简单介绍了logstash的两种用法，但是并不深入，后面如果工作中
+遇到的话，会继续记录。&lt;/p&gt;
 
 </description>
         <pubDate>Sat, 17 Jun 2017 19:00:00 +0800</pubDate>

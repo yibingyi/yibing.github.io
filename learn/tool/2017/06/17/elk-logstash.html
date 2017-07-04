@@ -199,46 +199,9 @@ bin/logstash-plugin install /path/to/logstash-filter-crash.gem
 <span class="o">}</span>
 </code></pre>
 </div>
-<blockquote>
-  <p>在运行结果中我们看到，输出的内容中加上了 key =&gt; value,并且打上了tag</p>
-</blockquote>
 
-<p>tag和type 有什么用？</p>
-
-<p>通常我们会在后面的插件中用到type和tag，配置文件看起来不好理解，我们继续学习吧</p>
-<div class="language-shell highlighter-rouge"><pre class="highlight"><code>input <span class="o">{</span>
-    stdin <span class="o">{</span>
-        <span class="nb">type</span> <span class="o">=</span>&gt; <span class="s2">"web"</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-filter <span class="o">{</span>
-    // logstash 的逻辑控制语句
-    <span class="k">if</span> <span class="o">[</span><span class="nb">type</span><span class="o">]</span> <span class="o">==</span> <span class="s2">"web"</span> <span class="o">{</span>
-        grok <span class="o">{</span>
-            match <span class="o">=</span>&gt; <span class="o">[</span><span class="s2">"message"</span>, %<span class="o">{</span>COMBINEDAPACHELOG<span class="o">}]</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-output <span class="o">{</span>
-    <span class="k">if</span> <span class="s2">"_grokparsefailure"</span> <span class="k">in</span> <span class="o">[</span>tags] <span class="o">{</span>
-        nagios_nsca <span class="o">{</span>
-            nagios_status <span class="o">=</span>&gt; <span class="s2">"1"</span>
-        <span class="o">}</span>
-    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-        elasticsearch <span class="o">{</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-</code></pre>
-</div>
-
-<blockquote>
-  <p>下面从一个实例开始逐渐深入</p>
-</blockquote>
-
-<p><strong>logstash 收集Syslog</strong></p>
-
-<p><a href="https://linux.cn/article-5023-1.html">Syslog</a> 可能是运维领域最流行的数据传输协议了。当你想从设备上收集系统日志的时候，<a href="https://linux.cn/article-5023-1.html">Syslog</a> 应该会是你的第一选择。尤其是网络设备，比如思科 —— <a href="https://linux.cn/article-5023-1.html">Syslog</a> 几乎是唯一可行的办法。</p>
+<p>以上，简单介绍了logstash的两种用法，但是并不深入，后面如果工作中
+遇到的话，会继续记录。</p>
 
 
   </div>
